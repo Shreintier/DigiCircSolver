@@ -418,12 +418,6 @@
             <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">💻 AI RTL CODE GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
-            <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
-            <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
-            <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
-            <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
-            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
-            <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
         </div>
     </div>
 
@@ -769,9 +763,9 @@
 
         document.getElementById('btnGenerateTTInputs').addEventListener('click', () => {
             const varsStr = document.getElementById('inputVarsTT').value;
-            const vars = [...new Set(varsStr.toUpperCase().match(/[A-Z]/g) || [])].sort();
+            const vars = [...new Set(varsStr.toUpperCase().match(/[A-Z0-9]/g) || [])];
             if (vars.length === 0 || vars.length > 6) {
-                alert("Please enter between 1 and 6 valid variables (A-Z).");
+                alert("Please enter between 1 and 6 valid variables.");
                 return;
             }
             
@@ -1103,7 +1097,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 const expr = document.getElementById('inputExpr').value;
                 if(!expr.trim()) throw new Error("Expression cannot be empty.");
                 
-                let allVars = expr.toUpperCase().match(/[A-Z]/g) || [];
+                let allVars = expr.toUpperCase().match(/[A-Z0-9]/g) || [];
                 const vars = [...new Set(allVars)].sort();
                 if(vars.length > 6) throw new Error("Maximum 6 variables supported for logic synthesis.");
                 if(vars.length === 0) throw new Error("No valid variables found.");
@@ -1121,7 +1115,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             } 
             else if (activeTab === 'tab-minmax') {
                 const varsStr = document.getElementById('inputVarsMin').value;
-                const vars = [...new Set(varsStr.toUpperCase().match(/[A-Z]/g) || [])].sort();
+                const vars = [...new Set(varsStr.toUpperCase().match(/[A-Z0-9]/g) || [])];
                 if(vars.length === 0 || vars.length > 6) throw new Error("Enter 1 to 6 valid variables.");
                 
                 const isMinterm = document.querySelector('input[name="termType"]:checked').value === 'minterms';
@@ -1185,7 +1179,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                    .replace(/!/g, '~');
                    
         norm = norm.replace(/\s+/g, '').toUpperCase();
-        norm = norm.replace(/([A-Z\)])(?=[A-Z\(~])/g, '$1&');
+        norm = norm.replace(/([A-Z0-9\)])(?=[A-Z0-9\(~])/g, '$1&');
         
         Object.keys(inputs).forEach(v => {
             norm = norm.replace(new RegExp(v, 'g'), inputs[v]);
@@ -1848,7 +1842,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         } else if (node.type === 'NOR') {
             svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
-            svg += `<text x="${nx}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
+            svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
         return svg;
     }
@@ -1859,41 +1853,49 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         if (type === 'hs') return [ { name: 'Half Subtractor (Diff)', vars: ['A','B'], tt: [0,1,1,0] }, { name: 'Half Subtractor (Bout)', vars: ['A','B'], tt: [0,1,0,0] } ];
         if (type === 'fs') return [ { name: 'Full Subtractor (Diff)', vars: ['A','B','Bin'], tt: [0,1,1,0,1,0,0,1] }, { name: 'Full Subtractor (Bout)', vars: ['A','B','Bin'], tt: [0,1,1,1,0,0,0,1] } ];
         if (type === 'mult2') {
-            let p = [[], [], [], []];
+            let p0 = [], p1 = [], p2 = [], p3 = [];
             for (let i = 0; i < 16; i++) {
-                let A = (i >> 2) & 3;
-                let B = i & 3;
+                let A1 = (i >> 3) & 1, A0 = (i >> 2) & 1;
+                let B1 = (i >> 1) & 1, B0 = i & 1;
+                let A = (A1 << 1) | A0;
+                let B = (B1 << 1) | B0;
                 let prod = A * B;
-                for (let bit = 0; bit < 4; bit++) {
-                    p[3 - bit].push((prod >> bit) & 1);
-                }
+                p3.push((prod >> 3) & 1);
+                p2.push((prod >> 2) & 1);
+                p1.push((prod >> 1) & 1);
+                p0.push(prod & 1);
             }
             return [
-                { name: '2x2 Multiplier (P3 / MSB)', vars: ['A1','A0','B1','B0'], tt: p[0] },
-                { name: '2x2 Multiplier (P2)', vars: ['A1','A0','B1','B0'], tt: p[1] },
-                { name: '2x2 Multiplier (P1)', vars: ['A1','A0','B1','B0'], tt: p[2] },
-                { name: '2x2 Multiplier (P0 / LSB)', vars: ['A1','A0','B1','B0'], tt: p[3] }
+                { name: '2x2 Multiplier (P3 / MSB)', vars: ['A1','A0','B1','B0'], tt: p3 },
+                { name: '2x2 Multiplier (P2)', vars: ['A1','A0','B1','B0'], tt: p2 },
+                { name: '2x2 Multiplier (P1)', vars: ['A1','A0','B1','B0'], tt: p1 },
+                { name: '2x2 Multiplier (P0 / LSB)', vars: ['A1','A0','B1','B0'], tt: p0 }
             ];
         }
         if (type === 'mux21') return [ { name: '2x1 MUX (Out)', vars: ['D1','D0','S'], tt: [0,0,1,1,0,1,0,1] } ];
         if (type === 'mux41') { let tt = []; for(let i=0; i<64; i++) { let S = (i >> 4) & 3; let D = [ (i>>3)&1, (i>>2)&1, (i>>1)&1, i&1 ]; tt.push(D[3 - S]); } return [{ name: '4x1 MUX (Out)', vars: ['S1','S0','D3','D2','D1','D0'], tt: tt }]; }
         if (type === 'mult3') {
-            let p = [[], [], [], [], [], []];
+            let p0 = [], p1 = [], p2 = [], p3 = [], p4 = [], p5 = [];
             for (let i = 0; i < 64; i++) {
-                let A = (i >> 3) & 7;
-                let B = i & 7;
+                let A2 = (i >> 5) & 1, A1 = (i >> 4) & 1, A0 = (i >> 3) & 1;
+                let B2 = (i >> 2) & 1, B1 = (i >> 1) & 1, B0 = i & 1;
+                let A = (A2 << 2) | (A1 << 1) | A0;
+                let B = (B2 << 2) | (B1 << 1) | B0;
                 let prod = A * B;
-                for (let bit = 0; bit < 6; bit++) {
-                    p[5 - bit].push((prod >> bit) & 1);
-                }
+                p5.push((prod >> 5) & 1);
+                p4.push((prod >> 4) & 1);
+                p3.push((prod >> 3) & 1);
+                p2.push((prod >> 2) & 1);
+                p1.push((prod >> 1) & 1);
+                p0.push(prod & 1);
             }
             return [
-                { name: '3x3 Multiplier (P5 / MSB)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[0] },
-                { name: '3x3 Multiplier (P4)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[1] },
-                { name: '3x3 Multiplier (P3)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[2] },
-                { name: '3x3 Multiplier (P2)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[3] },
-                { name: '3x3 Multiplier (P1)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[4] },
-                { name: '3x3 Multiplier (P0 / LSB)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p[5] }
+                { name: '3x3 Multiplier (P5 / MSB)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p5 },
+                { name: '3x3 Multiplier (P4)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p4 },
+                { name: '3x3 Multiplier (P3)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p3 },
+                { name: '3x3 Multiplier (P2)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p2 },
+                { name: '3x3 Multiplier (P1)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p1 },
+                { name: '3x3 Multiplier (P0 / LSB)', vars: ['A2','A1','A0','B2','B1','B0'], tt: p0 }
             ];
         }
     }
