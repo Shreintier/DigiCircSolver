@@ -400,6 +400,20 @@
 
         .block-diagram { display: flex; justify-content: center; align-items: center; padding: 2.5rem; background: var(--bg-tt); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem; }
         .block-box { background: var(--bg-block); border: 2px solid var(--accent-cyan); border-radius: var(--radius-md); padding: 2rem 3rem; text-align: center; position: relative; font-weight: 700; font-size: 1.2rem; color: var(--text-main); box-shadow: 0 0 20px rgba(0, 243, 255, 0.15); min-width: 180px; }
+        
+        .block-box.mux-trapezoid {
+            clip-path: polygon(0% 0%, 100% 20%, 100% 80%, 0% 100%);
+            padding: 2.5rem 3.5rem;
+            background: linear-gradient(135deg, var(--bg-block) 0%, rgba(99, 102, 241, 0.2) 100%);
+            border: 2px solid var(--accent-cyan);
+        }
+        .block-box.demux-trapezoid {
+            clip-path: polygon(0% 20%, 100% 0%, 100% 100%, 0% 80%);
+            padding: 2.5rem 3.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, var(--bg-block) 100%);
+            border: 2px solid var(--accent-cyan);
+        }
+
         .block-inputs, .block-outputs { display: flex; flex-direction: column; justify-content: space-around; position: absolute; top: 0; bottom: 0; }
         .block-inputs { left: -75px; } .block-outputs { right: -75px; }
         .block-pin { display: flex; align-items: center; font-size: 0.85rem; font-family: 'Fira Code', monospace; color: var(--accent-cyan); }
@@ -1903,10 +1917,10 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if (term.length === 1) {
                 const lit = term[0];
                 if (lit.startsWith('~')) {
-                    return { type: 'VAR', value: lit.substring(1) };
-                } else {
-                    const vNode = { type: 'VAR', value: lit };
+                    const vNode = { type: 'VAR', value: lit.substring(1) };
                     return { type: 'NOR', children: [vNode, vNode] };
+                } else {
+                    return { type: 'VAR', value: lit };
                 }
             }
             return { type: 'NOR', children: term.map(literalToNORNode) };
@@ -2104,7 +2118,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NAND</text>`;
         } else if (node.type === 'NOR') {
-            svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
+            svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="#818cf8" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
@@ -2308,7 +2322,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
     function renderBlockDiagram(type) {
         const div = document.createElement('div');
         div.className = 'block-diagram';
-        let title = "", inputs = "", outputs = "";
+        let title = "", inputs = "", outputs = "", boxClass = "block-box";
         
         if(type === 'ha') { title = "Half Adder"; inputs = "<div class='block-pin in'>A</div><div class='block-pin in'>B</div>"; outputs = "<div class='block-pin out'>Sum</div><div class='block-pin out'>Carry</div>"; }
         else if(type === 'fa') { title = "Full Adder"; inputs = "<div class='block-pin in'>A</div><div class='block-pin in'>B</div><div class='block-pin in'>Cin</div>"; outputs = "<div class='block-pin out'>Sum</div><div class='block-pin out'>Cout</div>"; }
@@ -2316,17 +2330,17 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         else if(type === 'fs') { title = "Full Subtractor"; inputs = "<div class='block-pin in'>A</div><div class='block-pin in'>B</div><div class='block-pin in'>Bin</div>"; outputs = "<div class='block-pin out'>Diff</div><div class='block-pin out'>Bout</div>"; }
         else if(type === 'mult2') { title = "2x2 Multiplier"; inputs = "<div class='block-pin in'>A1, A0</div><div class='block-pin in'>B1, B0</div>"; outputs = "<div class='block-pin out'>P3 (MSB)</div><div class='block-pin out'>P2</div><div class='block-pin out'>P1</div><div class='block-pin out'>P0</div>"; }
         else if(type === 'mult3') { title = "3x3 Multiplier"; inputs = "<div class='block-pin in'>A2, A1, A0</div><div class='block-pin in'>B2, B1, B0</div>"; outputs = "<div class='block-pin out'>P5 (MSB)</div><div class='block-pin out'>P4</div><div class='block-pin out'>P3</div><div class='block-pin out'>P2</div><div class='block-pin out'>P1</div><div class='block-pin out'>P0</div>"; }
-        else if(type === 'mux21') { title = "2x1 MUX"; inputs = "<div class='block-pin in'>D1, D0</div><div class='block-pin in'>S</div>"; outputs = "<div class='block-pin out'>Out</div>"; }
-        else if(type === 'mux41') { title = "4x1 MUX"; inputs = "<div class='block-pin in'>S1, S0</div><div class='block-pin in'>D3, D2, D1, D0</div>"; outputs = "<div class='block-pin out'>Out</div>"; }
-        else if(type === 'demux12') { title = "1x2 DeMUX"; inputs = "<div class='block-pin in'>DIN</div><div class='block-pin in'>S</div>"; outputs = "<div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
-        else if(type === 'demux14') { title = "1x4 DeMUX"; inputs = "<div class='block-pin in'>DIN</div><div class='block-pin in'>S1, S0</div>"; outputs = "<div class='block-pin out'>Y3</div><div class='block-pin out'>Y2</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
+        else if(type === 'mux21') { boxClass += " mux-trapezoid"; title = "2x1 MUX"; inputs = "<div class='block-pin in'>D1</div><div class='block-pin in'>D0</div><div class='block-pin in'>S</div>"; outputs = "<div class='block-pin out'>Out</div>"; }
+        else if(type === 'mux41') { boxClass += " mux-trapezoid"; title = "4x1 MUX"; inputs = "<div class='block-pin in'>D3..D0</div><div class='block-pin in'>S1, S0</div>"; outputs = "<div class='block-pin out'>Out</div>"; }
+        else if(type === 'demux12') { boxClass += " demux-trapezoid"; title = "1x2 DeMUX"; inputs = "<div class='block-pin in'>DIN</div><div class='block-pin in'>S</div>"; outputs = "<div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
+        else if(type === 'demux14') { boxClass += " demux-trapezoid"; title = "1x4 DeMUX"; inputs = "<div class='block-pin in'>DIN</div><div class='block-pin in'>S1, S0</div>"; outputs = "<div class='block-pin out'>Y3..Y0</div>"; }
         else if(type === 'enc42') { title = "4-to-2 Encoder"; inputs = "<div class='block-pin in'>D3, D2, D1, D0</div>"; outputs = "<div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
         else if(type === 'prio42') { title = "4-to-2 Priority Encoder"; inputs = "<div class='block-pin in'>D3, D2, D1, D0</div>"; outputs = "<div class='block-pin out'>V (Valid)</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
-        else if(type === 'dec24') { title = "2-to-4 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A1, A0</div>"; outputs = "<div class='block-pin out'>Y3</div><div class='block-pin out'>Y2</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
+        else if(type === 'dec24') { title = "2-to-4 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A1, A0</div>"; outputs = "<div class='block-pin out'>Y3..Y0</div>"; }
         else if(type === 'dec38') { title = "3-to-8 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A2, A1, A0</div>"; outputs = "<div class='block-pin out'>Y7..Y4</div><div class='block-pin out'>Y3..Y0</div>"; }
         else if(type === 'seg8') { title = "8-Segment Decoder"; inputs = "<div class='block-pin in'>DP_IN</div><div class='block-pin in'>D, C, B, A</div>"; outputs = "<div class='block-pin out'>a, b, c, d</div><div class='block-pin out'>e, f, g, dp</div>"; }
 
-        div.innerHTML = `<div class="block-box">
+        div.innerHTML = `<div class="${boxClass}">
             <div class="block-inputs">${inputs}</div>
             ${title}
             <div class="block-outputs">${outputs}</div>
