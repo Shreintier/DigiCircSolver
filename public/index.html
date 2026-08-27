@@ -400,6 +400,25 @@
         .block-pin.in::after { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-left: 8px; }
         .block-pin.out::before { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-right: 8px; }
 
+        #seg7-display-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background: #020617;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+        }
+        .seg7-segment {
+            fill: #1e293b;
+            transition: fill 0.15s ease, filter 0.15s ease;
+        }
+        .seg7-segment.active {
+            fill: #f43f5e;
+            filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.8));
+        }
+
         #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; font-size: 1.25rem; border: none; outline: none; background: var(--primary); color: white; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; box-shadow: var(--shadow-btn); transition: all 0.3s ease; }
         #scrollTopBtn:hover { background-color: var(--primary-hover); transform: translateY(-4px) scale(1.05); }
 
@@ -415,14 +434,8 @@
             <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
             <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
             <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
-            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
+            <div class="marquee-item">🧮 ARITHMETIC & DISPLAY GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">💻 AI RTL CODE GENERATOR <span class="dot"></span></div>
-            <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
-            <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
-            <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
-            <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
-            <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
-            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
         </div>
     </div>
@@ -540,11 +553,24 @@
                     <option value="prio42">4-to-2 Priority Encoder</option>
                     <option value="dec24">2-to-4 Binary Decoder</option>
                     <option value="dec38">3-to-8 Binary Decoder</option>
+                    <option value="seg7">BCD to 7-Segment Decoder (Common Cathode)</option>
                 </select>
 
                 <div id="interactiveCalc" style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md);">
                     <h3 style="color: var(--accent-green); margin-bottom: 1rem;">🧮 Live Auto-Translator & Calculator</h3>
                     
+                    <div id="seg7-display-container" style="display:none;">
+                        <svg width="120" height="180" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                            <polygon id="seg-a" class="seg7-segment" points="25,15 95,15 85,27 35,27" />
+                            <polygon id="seg-b" class="seg7-segment" points="97,18 97,82 85,74 85,28" />
+                            <polygon id="seg-c" class="seg7-segment" points="97,98 97,162 85,152 85,106" />
+                            <polygon id="seg-d" class="seg7-segment" points="25,165 95,165 85,153 35,153" />
+                            <polygon id="seg-e" class="seg7-segment" points="23,98 23,162 35,152 35,106" />
+                            <polygon id="seg-f" class="seg7-segment" points="23,18 23,82 35,28 35,74" />
+                            <polygon id="seg-g" class="seg7-segment" points="26,90 35,83 85,83 94,90 85,97 35,97" />
+                        </svg>
+                    </div>
+
                     <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
                         <div style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
                             <label id="lbl-calc-in1" style="color: var(--text-main); margin-bottom: 0.5rem; font-weight:700;">Input A</label>
@@ -559,7 +585,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <div id="calc-in2-box" style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
                             <label id="lbl-calc-in2" style="color: var(--text-main); margin-bottom: 0.5rem; font-weight:700;">Input B</label>
                             <div style="display: flex; gap: 0.5rem;">
                                 <div style="flex: 1;">
@@ -1011,7 +1037,21 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             'enc42': { l1: 'Active-High (1-hot, 4-bit)', b1: 4, l2: 'Unused (0)', b2: 1, l3: null, b3: 0, outBits: 2 },
             'prio42': { l1: 'Request Input (4-bit)', b1: 4, l2: 'Unused (0)', b2: 1, l3: null, b3: 0, outBits: 3 },
             'dec24': { l1: 'Select Address (2-bit)', b1: 2, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 4 },
-            'dec38': { l1: 'Select Address (3-bit)', b1: 3, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 8 }
+            'dec38': { l1: 'Select Address (3-bit)', b1: 3, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 8 },
+            'seg7': { l1: 'BCD Input (4-bit)', b1: 4, l2: null, b2: 0, l3: null, b3: 0, outBits: 7 }
+        };
+
+        const seg7Map = {
+            0: 0b1111110,
+            1: 0b0110000,
+            2: 0b1101101,
+            3: 0b1111001,
+            4: 0b0110011,
+            5: 0b1011011,
+            6: 0b1011111,
+            7: 0b1110000,
+            8: 0b1111111,
+            9: 0b1111011
         };
 
         function initCalculator() {
@@ -1019,7 +1059,14 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             const cfg = calcConfig[type];
 
             document.getElementById('lbl-calc-in1').innerText = cfg.l1;
-            document.getElementById('lbl-calc-in2').innerText = cfg.l2;
+            
+            const in2Box = document.getElementById('calc-in2-box');
+            if (cfg.l2) {
+                in2Box.style.display = 'block';
+                document.getElementById('lbl-calc-in2').innerText = cfg.l2;
+            } else {
+                in2Box.style.display = 'none';
+            }
             
             if (cfg.l3) {
                 document.getElementById('calc-in3-box').style.display = 'block';
@@ -1027,13 +1074,20 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             } else {
                 document.getElementById('calc-in3-box').style.display = 'none';
             }
+
+            const seg7Box = document.getElementById('seg7-display-container');
+            if (type === 'seg7') {
+                seg7Box.style.display = 'flex';
+            } else {
+                seg7Box.style.display = 'none';
+            }
             
             ['in1', 'in2', 'in3'].forEach((prefix, i) => {
                 let decEl = document.getElementById(`calc-${prefix}-dec`);
                 let binEl = document.getElementById(`calc-${prefix}-bin`);
                 let initialVal = (type.startsWith('dec') && prefix === 'in2') ? 1 : 0;
                 decEl.value = initialVal;
-                binEl.value = initialVal.toString(2).padStart(i < 2 ? cfg[`b${i+1}`] : (cfg.l3 ? cfg.b3 : 1), '0');
+                binEl.value = initialVal.toString(2).padStart(i < 2 ? (cfg[`b${i+1}`] || 1) : (cfg.l3 ? cfg.b3 : 1), '0');
             });
             updateCalcOutputs();
         }
@@ -1113,6 +1167,18 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             else if(type === 'dec38') {
                 outBinVal = (v2 & 1) ? (1 << v1) : 0;
                 outDec = outBinVal;
+            }
+            else if(type === 'seg7') {
+                outBinVal = seg7Map[v1] || 0;
+                outDec = v1;
+                const segs = ['a','b','c','d','e','f','g'];
+                segs.forEach((s, idx) => {
+                    const el = document.getElementById(`seg-${s}`);
+                    if (el) {
+                        const bitOn = (outBinVal >> (6 - idx)) & 1;
+                        el.classList.toggle('active', bitOn === 1);
+                    }
+                });
             }
 
             document.getElementById('calc-out-dec').value = outDec;
@@ -1699,10 +1765,10 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if (term.length === 1) {
                 const lit = term[0];
                 if (lit.startsWith('~')) {
-                    return { type: 'VAR', value: lit.substring(1) };
-                } else {
-                    const vNode = { type: 'VAR', value: lit };
+                    const vNode = { type: 'VAR', value: lit.substring(1) };
                     return { type: 'NOR', children: [vNode, vNode] };
+                } else {
+                    return { type: 'VAR', value: lit };
                 }
             }
             return { type: 'NOR', children: term.map(literalToNORNode) };
@@ -2058,6 +2124,38 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 { name: '3-to-8 Decoder (Y0)', vars: ['EN', 'A2', 'A1', 'A0'], tt: outputs[0] }
             ];
         }
+        if (type === 'seg7') {
+            const segOutputs = { a: [], b: [], c: [], d: [], e: [], f: [], g: [] };
+            for(let i = 0; i < 16; i++) {
+                if (i <= 9) {
+                    let pattern = seg7Map[i];
+                    segOutputs.a.push((pattern >> 6) & 1);
+                    segOutputs.b.push((pattern >> 5) & 1);
+                    segOutputs.c.push((pattern >> 4) & 1);
+                    segOutputs.d.push((pattern >> 3) & 1);
+                    segOutputs.e.push((pattern >> 2) & 1);
+                    segOutputs.f.push((pattern >> 1) & 1);
+                    segOutputs.g.push(pattern & 1);
+                } else {
+                    segOutputs.a.push('X');
+                    segOutputs.b.push('X');
+                    segOutputs.c.push('X');
+                    segOutputs.d.push('X');
+                    segOutputs.e.push('X');
+                    segOutputs.f.push('X');
+                    segOutputs.g.push('X');
+                }
+            }
+            return [
+                { name: '7-Segment (Segment a)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.a },
+                { name: '7-Segment (Segment b)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.b },
+                { name: '7-Segment (Segment c)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.c },
+                { name: '7-Segment (Segment d)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.d },
+                { name: '7-Segment (Segment e)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.e },
+                { name: '7-Segment (Segment f)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.f },
+                { name: '7-Segment (Segment g)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.g }
+            ];
+        }
     }
 
     function renderBlockDiagram(type) {
@@ -2079,6 +2177,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         else if(type === 'prio42') { title = "4-to-2 Priority Encoder"; inputs = "<div class='block-pin in'>D3, D2, D1, D0</div>"; outputs = "<div class='block-pin out'>V (Valid)</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
         else if(type === 'dec24') { title = "2-to-4 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A1, A0</div>"; outputs = "<div class='block-pin out'>Y3</div><div class='block-pin out'>Y2</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
         else if(type === 'dec38') { title = "3-to-8 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A2, A1, A0</div>"; outputs = "<div class='block-pin out'>Y7..Y4</div><div class='block-pin out'>Y3..Y0</div>"; }
+        else if(type === 'seg7') { title = "BCD to 7-Segment"; inputs = "<div class='block-pin in'>D, C, B, A</div>"; outputs = "<div class='block-pin out'>a, b, c, d, e, f, g</div>"; }
 
         div.innerHTML = `<div class="block-box">
             <div class="block-inputs">${inputs}</div>
