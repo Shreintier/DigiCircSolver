@@ -1613,8 +1613,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if (term.length === 1) {
                 const lit = term[0];
                 if (lit.startsWith('~')) {
-                    const vNode = { type: 'VAR', value: lit.substring(1) };
-                    return { type: 'NAND', children: [vNode, vNode] };
+                    return { type: 'VAR', value: lit.substring(1) };
                 } else {
                     const vNode = { type: 'VAR', value: lit };
                     return { type: 'NAND', children: [vNode, vNode] };
@@ -1640,8 +1639,12 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         const norInputs = posTerms.map(term => {
             if (term.length === 1) {
                 const lit = term[0];
-                const vNode = { type: 'VAR', value: lit.startsWith('~') ? lit.substring(1) : lit };
-                return { type: 'NOR', children: [vNode, vNode] };
+                if (lit.startsWith('~')) {
+                    const vNode = { type: 'VAR', value: lit.substring(1) };
+                    return { type: 'NOR', children: [vNode, vNode] };
+                } else {
+                    return { type: 'VAR', value: lit };
+                }
             }
             return { type: 'NOR', children: term.map(literalToNORNode) };
         });
