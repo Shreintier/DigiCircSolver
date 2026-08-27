@@ -1268,12 +1268,12 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         function evalNode(n) {
             if (!n) return 0;
             if (n.type === 'CONST') return n.value;
-            if (n.type === 'VAR') return inputs[n.value] || 0;
-            if (n.type === 'NOT') return !evalNode(n.children[0]) ? 1 : 0;
+            if (n.type === 'VAR') return inputs[n.value] !== undefined ? inputs[n.value] : 0;
+            if (n.type === 'NOT') return evalNode(n.children[0]) ? 0 : 1;
             if (n.type === 'AND') return n.children.every(c => evalNode(c) === 1) ? 1 : 0;
             if (n.type === 'OR') return n.children.some(c => evalNode(c) === 1) ? 1 : 0;
-            if (n.type === 'NAND') return !n.children.every(c => evalNode(c) === 1) ? 1 : 0;
-            if (n.type === 'NOR') return !n.children.some(c => evalNode(c) === 1) ? 1 : 0;
+            if (n.type === 'NAND') return n.children.every(c => evalNode(c) === 1) ? 0 : 1;
+            if (n.type === 'NOR') return n.children.some(c => evalNode(c) === 1) ? 0 : 1;
             return 0;
         }
 
@@ -1903,10 +1903,10 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if (term.length === 1) {
                 const lit = term[0];
                 if (lit.startsWith('~')) {
-                    const vNode = { type: 'VAR', value: lit.substring(1) };
-                    return { type: 'NOR', children: [vNode, vNode] };
+                    return { type: 'VAR', value: lit.substring(1) };
                 } else {
-                    return { type: 'VAR', value: lit };
+                    const vNode = { type: 'VAR', value: lit };
+                    return { type: 'NOR', children: [vNode, vNode] };
                 }
             }
             return { type: 'NOR', children: term.map(literalToNORNode) };
@@ -1949,12 +1949,13 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
     function evaluateAST(node, inputs) {
         if (!node) return 0;
         if (node.type === 'CONST') return node.value;
-        if (node.type === 'VAR') return inputs[node.value] || 0;
-        if (node.type === 'NOT') return !evaluateAST(node.children[0], inputs);
-        if (node.type === 'AND') return node.children.reduce((acc, c) => acc && evaluateAST(c, inputs), true);
-        if (node.type === 'OR') return node.children.reduce((acc, c) => acc || evaluateAST(c, inputs), false);
-        if (node.type === 'NAND') return !(node.children.reduce((acc, c) => acc && evaluateAST(c, inputs), true));
-        if (node.type === 'NOR') return !(node.children.reduce((acc, c) => acc || evaluateAST(c, inputs), false));
+        if (node.type === 'VAR') return inputs[node.value] !== undefined ? inputs[node.value] : 0;
+        if (node.type === 'NOT') return evaluateAST(node.children[0], inputs) ? 0 : 1;
+        if (node.type === 'AND') return node.children.every(c => evaluateAST(c, inputs) === 1) ? 1 : 0;
+        if (node.type === 'OR') return node.children.some(c => evaluateAST(c, inputs) === 1) ? 1 : 0;
+        if (node.type === 'NAND') return node.children.every(c => evaluateAST(c, inputs) === 1) ? 0 : 1;
+        if (node.type === 'NOR') return node.children.some(c => evaluateAST(c, inputs) === 1) ? 0 : 1;
+        return 0;
     }
 
     function verifyASTs(vars, ttOriginal, astSOP, astNAND, astNOR) {
@@ -1964,9 +1965,9 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             for(let j=0; j<vars.length; j++) {
                 inputVals[vars[j]] = (i & (1 << (vars.length - 1 - j))) ? 1 : 0;
             }
-            let resSOP = evaluateAST(astSOP, inputVals) ? 1 : 0;
-            let resNAND = evaluateAST(astNAND, inputVals) ? 1 : 0;
-            let resNOR = evaluateAST(astNOR, inputVals) ? 1 : 0;
+            let resSOP = evaluateAST(astSOP, inputVals);
+            let resNAND = evaluateAST(astNAND, inputVals);
+            let resNOR = evaluateAST(astNOR, inputVals);
             if(resSOP !== ttOriginal[i] || resNAND !== ttOriginal[i] || resNOR !== ttOriginal[i]) return false;
         }
         return true;
@@ -2105,7 +2106,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         } else if (node.type === 'NOR') {
             svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
-            svg += `<text x="${nx}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
+            svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
         return svg;
     }
