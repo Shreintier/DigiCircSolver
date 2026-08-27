@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universal Logic Engine & AI Synthesizer</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Base Core Colors */
             --primary: #6366f1;
             --primary-hover: #4f46e5;
             
-            /* Dark Mode Defaults (Active by default) */
             --bg-main: #060913;
             --bg-card: rgba(15, 23, 42, 0.72);
             --bg-glass: rgba(13, 19, 36, 0.8);
@@ -47,7 +44,6 @@
             --radius-sm: 8px;
         }
 
-        /* Light Mode Theme Overrides */
         body.light-mode {
             --bg-main: #f8fafc;
             --bg-card: rgba(255, 255, 255, 0.85);
@@ -65,7 +61,7 @@
             --border-color: rgba(99, 102, 241, 0.25);
             --border-highlight: rgba(99, 102, 241, 0.6);
             
-            --accent-cyan: #0284c7; /* Darker blue instead of neon cyan */
+            --accent-cyan: #0284c7;
             --accent-green: #059669;
             --accent-amber: #d97706;
             --accent-purple: #7e22ce;
@@ -93,7 +89,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Full Screen Background Motion Canvas */
         #bgCanvas {
             position: fixed;
             top: 0;
@@ -110,7 +105,6 @@
         ::-webkit-scrollbar-thumb { background: var(--bg-block); border-radius: 4px; border: 1px solid var(--border-color); }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* Top Infinite Auto-Scrolling Announcement Marquee Bar */
         .marquee-container {
             background: linear-gradient(90deg, #312e81 0%, #1e1b4b 25%, #0284c7 50%, #4c1d95 75%, #312e81 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -132,7 +126,6 @@
         .marquee-item span.dot { width: 6px; height: 6px; background: #00f3ff; border-radius: 50%; box-shadow: 0 0 8px #00f3ff; }
         @keyframes marqueeScroll { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
-        /* Header Styling */
         header.geniani-header {
             background: var(--bg-glass);
             backdrop-filter: blur(24px);
@@ -185,7 +178,7 @@
             gap: 0.6rem;
             background: rgba(99, 102, 241, 0.15);
             border: 1px solid rgba(129, 140, 248, 0.4);
-            color: var(--primary-light);
+            color: var(--accent-purple);
             padding: 0.45rem 1.25rem;
             border-radius: var(--radius-pill);
             font-size: 0.78rem;
@@ -217,7 +210,6 @@
 
         header p.subtitle { color: var(--text-muted); font-size: 0.98rem; max-width: 780px; font-weight: 400; }
 
-        /* Main Container & Card Styling */
         .container { max-width: 1200px; width: 100%; margin: 2rem auto; padding: 0 1.5rem; flex: 1; }
 
         .card {
@@ -288,7 +280,6 @@
             background-repeat: no-repeat; background-position: right 1.25rem center; background-size: 16px 12px; padding-right: 2.75rem;
         }
 
-        /* Tabs */
         .tabs-wrapper {
             background: var(--bg-block); padding: 0.45rem; border-radius: var(--radius-md);
             border: 1px solid var(--border-color); margin-bottom: 1.75rem;
@@ -310,7 +301,6 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Radio Group */
         .radio-group {
             display: flex; gap: 1.5rem; margin-bottom: 1.25rem; padding: 0.85rem 1.15rem;
             background: var(--bg-block); border-radius: var(--radius-md); border: 1px solid var(--border-color);
@@ -318,7 +308,6 @@
         .radio-group label { margin: 0; display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-weight: 500; color: var(--text-main); }
         .radio-group input[type="radio"] { accent-color: var(--primary); width: 17px; height: 17px; }
 
-        /* Buttons */
         button.primary-btn {
             background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 50%, #0284c7 100%);
             color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.95rem 1.8rem;
@@ -342,7 +331,6 @@
         }
         .error:not(:empty) { display: block; }
 
-        /* Output Sections */
         .multi-output-section {
             background: var(--bg-card); backdrop-filter: blur(16px); border-radius: var(--radius-lg);
             padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-card); border: 1px solid var(--border-color);
@@ -376,7 +364,6 @@
             border: 1px solid var(--border-color); display: inline-block; margin-top: 0.25rem; word-break: break-all;
         }
 
-        /* Truth Table Table */
         .tt-container { max-height: 380px; overflow-y: auto; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-tt); }
         table { width: 100%; border-collapse: collapse; text-align: center; }
         th, td { padding: 0.65rem; font-size: 0.88rem; border-bottom: 1px solid var(--border-color); border-right: 1px solid var(--border-color); font-family: 'Fira Code', monospace; color: var(--text-main); }
@@ -388,13 +375,23 @@
 
         select.tt-select { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; }
 
-        /* Wrappers for Visuals */
         .kmap-wrapper { background: var(--bg-result); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto; box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05); }
         .circuit-box { background: var(--bg-result); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem; }
         .svg-container { overflow: auto; background: var(--bg-tt); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; max-height: 550px; width: 100%; box-shadow: inset 0 2px 15px rgba(0,0,0,0.1); position: relative; }
         .svg-container svg { display: block; margin: 0 auto; }
 
-        /* Block Diagram */
+        .metrics-badge {
+            display: inline-flex;
+            gap: 1.25rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-block);
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            font-family: 'Fira Code', monospace;
+        }
+
         .block-diagram { display: flex; justify-content: center; align-items: center; padding: 2.5rem; background: var(--bg-tt); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem; }
         .block-box { background: var(--bg-block); border: 2px solid var(--accent-cyan); border-radius: var(--radius-md); padding: 2rem 3rem; text-align: center; position: relative; font-weight: 700; font-size: 1.2rem; color: var(--text-main); box-shadow: 0 0 20px rgba(0, 243, 255, 0.15); min-width: 180px; }
         .block-inputs, .block-outputs { display: flex; flex-direction: column; justify-content: space-around; position: absolute; top: 0; bottom: 0; }
@@ -403,7 +400,6 @@
         .block-pin.in::after { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-left: 8px; }
         .block-pin.out::before { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-right: 8px; }
 
-        /* Scroll Top Button */
         #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; font-size: 1.25rem; border: none; outline: none; background: var(--primary); color: white; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; box-shadow: var(--shadow-btn); transition: all 0.3s ease; }
         #scrollTopBtn:hover { background-color: var(--primary-hover); transform: translateY(-4px) scale(1.05); }
 
@@ -411,23 +407,16 @@
     </style>
 </head>
 <body>
-    <!-- Full-screen animated motion background canvas -->
     <canvas id="bgCanvas"></canvas>
 
     <div class="marquee-container" aria-label="Engine Capabilities Ticker">
         <div class="marquee-track">
             <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
             <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
-            <div class="marquee-item">🛠️ UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
+            <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
             <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
             <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">💻 AI RTL CODE GENERATOR <span class="dot"></span></div>
-            <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
-            <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
-            <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
-            <div class="marquee-item">🛠️ UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
-            <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
-            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
         </div>
     </div>
@@ -440,16 +429,14 @@
                 Digital Circuits EE1202
             </div>
             <h1>Advanced Digital Logic Synthesizer</h1>
-            <p class="subtitle">Minimize boolean expressions, solve Quine-McCluskey prime implicants, generate visual 1 to 6 variable Karnaugh Maps, synthesize universal logic circuits, write RTL code, and read circuit diagram images instantly using AI.</p>
+            <p class="subtitle">Minimize boolean expressions, solve Quine-McCluskey prime implicants, generate visual 1 to 6 variable Karnaugh Maps, synthesize transistor-minimized universal logic circuits, write RTL code, and read circuit diagrams.</p>
         </div>
     </header>
 
     <main class="container">
-        <!-- SOLVER & GENERATOR SECTION -->
         <section class="card input-section" id="solverSection">
             <div class="tabs-wrapper">
                 <nav class="tabs" aria-label="Synthesis Input Options">
-                    <!-- NEW AI TAB Relocated -->
                     <button class="tab" data-target="tab-ai">
                         <span>🤖</span> AI Assistant
                     </button>
@@ -471,18 +458,16 @@
                 </nav>
             </div>
 
-            <!-- TAB 0: AI Logic Assistant -->
             <div class="tab-content" id="tab-ai">
                 <h2 style="margin-bottom: 1rem;">🤖 AI Logic Assistant (Google Gemini)</h2>
                 <label for="prompt">Problem Statement / Expression Prompt</label>
-                <textarea id="prompt" placeholder="Ask AI to help design or optimize a digital logic circuit (e.g. 'Create a 3-input majority voter circuit with sensors for Temperature, Pressure, and Humidity')..."></textarea>
+                <textarea id="prompt" placeholder="Ask AI to help design or optimize a digital logic circuit (e.g. 'Create a 3-input majority voter circuit')..."></textarea>
 
                 <button id="submitBtn" class="primary-btn">Ask AI Assistant & Map Variables ⚡</button>
 
                 <label style="margin-top: 1.25rem;">Expression Output</label>
                 <div id="responseOutput" class="code-font" style="min-height: 80px; width: 100%; white-space: pre-wrap; margin-top: 0.5rem; display: block;">Response will appear here...</div>
                 
-                <!-- Variable Mapping UI Block -->
                 <div id="variableMapping" style="margin-top: 1.25rem; display: none;"></div>
 
                 <div class="ai-divider"><span>Or Upload a Circuit Diagram</span></div>
@@ -501,14 +486,12 @@
                 <div id="imageResponseOutput" class="code-font" style="min-height: 80px; width: 100%; white-space: pre-wrap; margin-top: 0.5rem; display: block;">Upload a circuit image and click analyze to generate the Boolean expression...</div>
             </div>
 
-            <!-- TAB 1: Boolean Expression -->
             <div class="tab-content active" id="tab-expr">
                 <label for="inputExpr">Boolean Expression (Use &, |, ~, ^ for AND, OR, NOT, XOR):</label>
                 <input type="text" id="inputExpr" placeholder="e.g. A & B | ~C & D | E & ~F">
                 <button id="btnSynthesizeExpr" class="primary-btn synthesize-btn">Synthesize & Solve K-Map ⚡</button>
             </div>
 
-            <!-- TAB 2: Minterms / Maxterms -->
             <div class="tab-content" id="tab-minmax">
                 <label for="inputVarsMin">Variables (comma separated, 1-6 variables):</label>
                 <input type="text" id="inputVarsMin" placeholder="e.g. A, B, C, D, E, F">
@@ -526,7 +509,6 @@
                 <button id="btnSynthesizeMinMax" class="primary-btn synthesize-btn">Synthesize & Solve K-Map ⚡</button>
             </div>
 
-            <!-- TAB 3: Truth Table -->
             <div class="tab-content" id="tab-tt">
                 <label for="inputVarsTT">Variables (comma separated, 1-6 variables):</label>
                 <input type="text" id="inputVarsTT" placeholder="e.g. A, B, C, D, E, F">
@@ -535,7 +517,6 @@
                 <button id="btnSynthesizeTT" class="primary-btn synthesize-btn" style="display:none; margin-top:1.25rem;">Synthesize & Solve K-Map ⚡</button>
             </div>
 
-            <!-- TAB 4: Arithmetic Circuits -->
             <div class="tab-content" id="tab-arithmetic">
                 <label for="selectArithmetic">Select Pre-Defined Arithmetic Circuit:</label>
                 <select id="selectArithmetic" class="styled-select">
@@ -549,12 +530,10 @@
                     <option value="mult3">3x3 Multiplier</option>
                 </select>
 
-                <!-- Live Interactive Calculator -->
                 <div id="interactiveCalc" style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md);">
                     <h3 style="color: var(--accent-green); margin-bottom: 1rem;">🧮 Live Auto-Translator & Calculator</h3>
                     
                     <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
-                        <!-- Input 1 -->
                         <div style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
                             <label id="lbl-calc-in1" style="color: var(--text-main); margin-bottom: 0.5rem; font-weight:700;">Input A</label>
                             <div style="display: flex; gap: 0.5rem;">
@@ -568,7 +547,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Input 2 -->
                         <div style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
                             <label id="lbl-calc-in2" style="color: var(--text-main); margin-bottom: 0.5rem; font-weight:700;">Input B</label>
                             <div style="display: flex; gap: 0.5rem;">
@@ -582,7 +560,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Input 3 -->
                         <div id="calc-in3-box" style="display: none; background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); grid-column: 1 / -1;">
                             <label id="lbl-calc-in3" style="color: var(--text-main); margin-bottom: 0.5rem; font-weight:700;">Input C (Cin)</label>
                             <div style="display: flex; gap: 0.5rem;">
@@ -616,10 +593,9 @@
                 <button id="btnSynthesizeArithmetic" class="primary-btn synthesize-btn" style="margin-top: 1.5rem;">Generate Full Logic Pipeline AST ⚡</button>
             </div>
 
-            <!-- TAB 5: RTL Generation -->
             <div class="tab-content" id="tab-rtl">
                 <label for="rtlPrompt">Problem Statement (RTL Description)</label>
-                <textarea id="rtlPrompt" placeholder="Describe the digital circuit you need code for (e.g. 'Create a 4-bit synchronous up counter with an asynchronous active-low reset and enable signal')..."></textarea>
+                <textarea id="rtlPrompt" placeholder="Describe the digital circuit you need code for (e.g. 'Create a 4-bit synchronous up counter with enable')..."></textarea>
 
                 <label for="rtlLang">Target HDL Language</label>
                 <select id="rtlLang" class="styled-select">
@@ -637,7 +613,6 @@
             <div id="errorMsg" class="error"></div>
         </section>
 
-        <!-- OUTPUT SECTION -->
         <section id="outputs" style="display: none;"></section>
     </main>
 
@@ -650,7 +625,6 @@
     </footer>
 
     <script>
-    // Theme Toggle State
     let isLightMode = false;
     const themeToggleBtn = document.getElementById('themeToggle');
 
@@ -659,7 +633,6 @@
         document.body.classList.toggle('light-mode', isLightMode);
         themeToggleBtn.innerHTML = isLightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
         
-        // Re-render outputs if they exist so the SVGs update colors
         if(document.getElementById('outputs').style.display === 'block') {
             const activeTab = document.querySelector('.tab.active').dataset.target;
             if(activeTab !== 'tab-rtl' && activeTab !== 'tab-ai') {
@@ -668,7 +641,6 @@
         }
     });
 
-    // Magical Starry Background Animation Engine
     (function initMotionBackground() {
         const canvas = document.getElementById('bgCanvas');
         if (!canvas) return;
@@ -679,7 +651,7 @@
 
         let particles = [];
         const numParticles = 120;
-        const colorsDark = ['#ffffff', '#fef08a', '#a5b4fc', '#67e8f9']; // White, Gold, Soft Purple, Cyan
+        const colorsDark = ['#ffffff', '#fef08a', '#a5b4fc', '#67e8f9'];
         const colorsLight = ['#ffffff', '#fbbf24', '#818cf8', '#38bdf8']; 
 
         function initParticles() {
@@ -690,7 +662,7 @@
                     y: Math.random() * height,
                     radius: Math.random() * 2 + 0.5,
                     vx: (Math.random() - 0.5) * 0.5,
-                    vy: Math.random() * -1 - 0.2, // drifting upwards
+                    vy: Math.random() * -1 - 0.2,
                     baseAlpha: Math.random() * 0.5 + 0.3,
                     pulse: Math.random() * Math.PI * 2,
                     colorIdx: Math.floor(Math.random() * 4)
@@ -707,22 +679,20 @@
         initParticles();
 
         function renderFrame() {
-            // Draw Gradient Background
             let grad = ctx.createLinearGradient(0, 0, 0, height);
             if (isLightMode) {
-                grad.addColorStop(0, '#e0f2fe'); // Soft sky blue top
-                grad.addColorStop(1, '#fdf4ff'); // Soft pinkish/white bottom
+                grad.addColorStop(0, '#e0f2fe');
+                grad.addColorStop(1, '#fdf4ff');
             } else {
-                grad.addColorStop(0, '#0f172a'); // Deep slate blue
-                grad.addColorStop(0.5, '#1e1b4b'); // Deep indigo middle
-                grad.addColorStop(1, '#020617'); // Blackish blue bottom
+                grad.addColorStop(0, '#0f172a');
+                grad.addColorStop(0.5, '#1e1b4b');
+                grad.addColorStop(1, '#020617');
             }
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, width, height);
 
             const activeColors = isLightMode ? colorsLight : colorsDark;
 
-            // Draw Particles
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
                 p.x += p.vx;
@@ -739,14 +709,10 @@
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                
-                // Magical glow effect
                 ctx.shadowBlur = isLightMode ? 6 : 12;
                 ctx.shadowColor = activeColors[p.colorIdx];
                 ctx.fillStyle = `rgba(${hexToRgb(activeColors[p.colorIdx])}, ${currentAlpha})`;
                 ctx.fill();
-                
-                // Reset shadow to not affect other things
                 ctx.shadowBlur = 0;
             }
             requestAnimationFrame(renderFrame);
@@ -754,7 +720,7 @@
 
         function hexToRgb(hex) {
             let r = 0, g = 0, b = 0;
-            if (hex.length == 7) {
+            if (hex.length === 7) {
                 r = parseInt(hex.slice(1, 3), 16);
                 g = parseInt(hex.slice(3, 5), 16);
                 b = parseInt(hex.slice(5, 7), 16);
@@ -765,8 +731,6 @@
         renderFrame();
     })();
 
-    console.log("Advanced Logic Synthesizer & 6-Var K-Map Engine Loaded");
-
     function switchTabAndFocus(targetId) {
         const tabBtn = document.querySelector(`.tab[data-target="${targetId}"]`);
         if (tabBtn) tabBtn.click();
@@ -775,7 +739,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        // UI Tabs Switcher
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
                 const targetBtn = e.currentTarget;
@@ -787,7 +750,6 @@
             });
         });
 
-        // Minterm / Maxterm Label Switch
         document.querySelectorAll('input[name="termType"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 document.getElementById('lblTerms').innerText = 
@@ -795,7 +757,6 @@
             });
         });
 
-        // Truth Table Input Generator
         document.getElementById('btnGenerateTTInputs').addEventListener('click', () => {
             const varsStr = document.getElementById('inputVarsTT').value;
             const vars = [...new Set(varsStr.toUpperCase().match(/[A-Z]/g) || [])].sort();
@@ -829,17 +790,14 @@
             document.getElementById('btnSynthesizeTT').style.display = 'block';
         });
 
-        // Synthesize Button Listeners
         document.querySelectorAll('.synthesize-btn').forEach(btn => {
             btn.addEventListener('click', processInput);
         });
 
-        // Scroll Top Button
         const scrollTopBtn = document.getElementById("scrollTopBtn");
         window.onscroll = () => { scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none"; };
         scrollTopBtn.onclick = () => { window.scrollTo({top: 0, behavior: 'smooth'}); };
 
-        // Gemini AI Logic - BOOLEAN EXPRESSION + MAPPING ENHANCED
         document.getElementById('submitBtn').addEventListener('click', async () => {
             const userPrompt = document.getElementById('prompt').value.trim();
             const output = document.getElementById('responseOutput');
@@ -860,8 +818,6 @@
                 });
 
                 const data = await response.json();
-                
-                // Gracefully display the error if token limit is hit
                 if (!response.ok) throw new Error(data.error || `HTTP Error ${response.status}`);
 
                 const cleanExpr = data.expression ? data.expression.trim() : '';
@@ -870,10 +826,8 @@
 
                 if (!cleanExpr) throw new Error('Failed to parse expression from response.');
 
-                // Display the conversational chat response and the expression
                 output.innerHTML = `<div style="color: var(--accent-cyan); font-weight: bold; margin-bottom: 0.5rem;">🤖 ${chatMsg}</div>Generated Expression: ${cleanExpr}`;
 
-                // Variable Mapping UI Block
                 const mapDiv = document.getElementById('variableMapping');
                 if (mapping && Object.keys(mapping).length > 0) {
                     let mapHtml = `<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 1.25rem; border-radius: var(--radius-md);">
@@ -898,12 +852,10 @@
                 if (synthesizeBtn) synthesizeBtn.click();
 
             } catch (error) {
-                // Displays the friendly token limit error safely in the UI
                 output.textContent = '⚠️ ' + error.message;
             }
         });
 
-        // Gemini AI Logic - RTL GENERATOR
         document.getElementById('btnGenerateRTL').addEventListener('click', async () => {
             const prompt = document.getElementById('rtlPrompt').value.trim();
             const lang = document.getElementById('rtlLang').value;
@@ -930,7 +882,7 @@
 
                 if (data.rtl_code) {
                     output.textContent = data.rtl_code;
-                } else if (data.code) { // Fallback
+                } else if (data.code) {
                     output.textContent = data.code;
                 } else {
                     output.textContent = JSON.stringify(data, null, 2); 
@@ -941,7 +893,6 @@
             }
         });
 
-        // Gemini AI Logic - CIRCUIT IMAGE ANALYSIS (routed through the same secure backend endpoint)
         let selectedCircuitImageFile = null;
         const circuitImageInput = document.getElementById('circuitImage');
         const imagePreviewWrap = document.getElementById('imagePreviewWrap');
@@ -991,12 +942,10 @@
                 });
 
                 const mimeType = selectedCircuitImageFile.type || 'image/png';
-
                 const visionPrompt = `You are a digital logic circuit reader. Look at the attached image of a logic gate circuit (it may be hand-drawn, a textbook diagram, or a schematic tool export).
 
 Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires connect them, and the final output. Then derive the single Boolean expression for the circuit's output. If the image does not contain a readable logic circuit, set "expression" to the exact string UNREADABLE.`;
 
-                // Sent to our own backend (/api/generate) which holds the Gemini API key server-side.
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1030,7 +979,6 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             }
         });
 
-        // Live Auto-Translator Calculator Setup
         const calcConfig = {
             'ha': { l1: 'A (1-bit)', b1: 1, l2: 'B (1-bit)', b2: 1, l3: null, b3: 0, outBits: 2 },
             'fa': { l1: 'A (1-bit)', b1: 1, l2: 'B (1-bit)', b2: 1, l3: 'Cin (1-bit)', b3: 1, outBits: 2 },
@@ -1215,29 +1163,22 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
     }
 
     function evaluateExpression(expr, inputs) {
-        // 1. Replace word operators safely (case-insensitive, matching whole words only)
         let norm = expr.replace(/\bAND\b/gi, '&')
                        .replace(/\bOR\b/gi, '|')
                        .replace(/\bNOT\b/gi, '~')
                        .replace(/\bXOR\b/gi, '^');
         
-        // 2. Map standard math/programming symbols to our logic engine symbols
         norm = norm.replace(/\*/g, '&')
                    .replace(/\+/g, '|')
                    .replace(/!/g, '~');
                    
-        // 3. Remove all spaces and uppercase variables
         norm = norm.replace(/\s+/g, '').toUpperCase();
-        
-        // 4. Handle implicit AND (e.g. AB -> A&B, A(B) -> A&(B))
         norm = norm.replace(/([A-Z\)])(?=[A-Z\(~])/g, '$1&');
         
-        // 5. Inject actual 1s and 0s from the truth table iteration
         Object.keys(inputs).forEach(v => {
             norm = norm.replace(new RegExp(v, 'g'), inputs[v]);
         });
         
-        // 6. Convert engine symbols to JavaScript eval-ready symbols
         let jsExpr = norm.replace(/&/g, '&&').replace(/\|/g, '||').replace(/~/g, '!');
         jsExpr = jsExpr.replace(/([01!&|()]+)\^([01!&|()]+)/g, '!!($1) !== !!($2)'); 
 
@@ -1247,6 +1188,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             throw new Error(`Invalid Boolean Expression context: ${expr}`);
         }
     }
+
     function quineMcCluskey(targets, dontCares, numVars) {
         if (targets.length === 0) return [];
         let allTerms = [...new Set([...targets, ...dontCares])];
@@ -1332,7 +1274,6 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         const numVars = vars.length;
         const groupColors = ['#00f3ff', '#f43f5e', '#10b981', '#f59e0b', '#a855f7', '#ec4899', '#3b82f6', '#84cc16'];
         
-        // Define theme-aware colors for SVG
         const cBg = isLightMode ? '#ffffff' : '#040711';
         const cText = isLightMode ? '#0f172a' : '#f8fafc';
         const cTextDim = isLightMode ? '#64748b' : '#64748b';
@@ -1348,7 +1289,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         }
 
         let numSubRows = 1, numSubCols = 1, numRows = 2, numCols = 2;
-        let rowVars = [], colVars = [], mapVars = [];
+        let rowVars = [], colVars = [];
         let rowGray = [0, 1], colGray = [0, 1];
         let rowGrayLabels = ['0', '1'], colGrayLabels = ['0', '1'];
         let subMapLabels = [''];
@@ -1357,8 +1298,8 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         else if (numVars === 2) { rowVars = [vars[0]]; colVars = [vars[1]]; numRows = 2; numCols = 2; }
         else if (numVars === 3) { rowVars = [vars[0]]; colVars = [vars[1], vars[2]]; numRows = 2; numCols = 4; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; }
         else if (numVars === 4) { rowVars = [vars[0], vars[1]]; colVars = [vars[2], vars[3]]; numRows = 4; numCols = 4; rowGray = [0, 1, 3, 2]; rowGrayLabels = ['00', '01', '11', '10']; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; }
-        else if (numVars === 5) { mapVars = [vars[0]]; rowVars = [vars[1], vars[2]]; colVars = [vars[3], vars[4]]; numSubRows = 1; numSubCols = 2; numRows = 4; numCols = 4; rowGray = [0, 1, 3, 2]; rowGrayLabels = ['00', '01', '11', '10']; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; subMapLabels = [`${vars[0]} = 0`, `${vars[0]} = 1`]; }
-        else if (numVars === 6) { mapVars = [vars[0], vars[1]]; rowVars = [vars[2], vars[3]]; colVars = [vars[4], vars[5]]; numSubRows = 2; numSubCols = 2; numRows = 4; numCols = 4; rowGray = [0, 1, 3, 2]; rowGrayLabels = ['00', '01', '11', '10']; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; subMapLabels = [`${vars[0]}${vars[1]} = 00`, `${vars[0]}${vars[1]} = 01`, `${vars[0]}${vars[1]} = 10`, `${vars[0]}${vars[1]} = 11`]; }
+        else if (numVars === 5) { rowVars = [vars[1], vars[2]]; colVars = [vars[3], vars[4]]; numSubRows = 1; numSubCols = 2; numRows = 4; numCols = 4; rowGray = [0, 1, 3, 2]; rowGrayLabels = ['00', '01', '11', '10']; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; subMapLabels = [`${vars[0]} = 0`, `${vars[0]} = 1`]; }
+        else if (numVars === 6) { rowVars = [vars[2], vars[3]]; colVars = [vars[4], vars[5]]; numSubRows = 2; numSubCols = 2; numRows = 4; numCols = 4; rowGray = [0, 1, 3, 2]; rowGrayLabels = ['00', '01', '11', '10']; colGray = [0, 1, 3, 2]; colGrayLabels = ['00', '01', '11', '10']; subMapLabels = [`${vars[0]}${vars[1]} = 00`, `${vars[0]}${vars[1]} = 01`, `${vars[0]}${vars[1]} = 10`, `${vars[0]}${vars[1]} = 11`]; }
 
         function getMinterm(sR, sC, r, c) {
             let subVal = 0;
@@ -1503,8 +1444,6 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         return `<div style="display:flex; flex-direction:column; align-items:center; overflow-x:auto; padding:1rem 0;">${svg}${legendHtml}</div>`;
     }
 
-    window.circuitASTs = window.circuitASTs || {};
-
     function runSynthesis(vars, tt, index = 0) {
         const minterms1 = tt.map((v, i) => v === 1 ? i : -1).filter(i => i !== -1);
         const minterms0 = tt.map((v, i) => v === 0 ? i : -1).filter(i => i !== -1);
@@ -1522,11 +1461,13 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         const kmapHtml = renderKMapSVG(vars, minterms1, dontCares, qmSOP, sopTerms);
         const ttHtml = generateTruthTableHTML(vars, tt);
 
-        const astStandard = buildStandardAST(sopTerms);
-        const astStandardPOS = buildPOSStandardAST(posTerms);
-        
-        const astNAND = convertToNAND(astStandard);
-        const astNOR = convertToNOR(astStandardPOS);
+        const astStandard = buildOptimizedStandardAST(sopTerms);
+        const astNAND = buildOptimizedNANDAST(sopTerms);
+        const astNOR = buildOptimizedNORAST(posTerms);
+
+        const mStandard = calculateMetrics(astStandard);
+        const mNAND = calculateMetrics(astNAND);
+        const mNOR = calculateMetrics(astNOR);
 
         const verified = verifyASTs(vars, tt, astStandard, astNAND, astNOR);
         const veriClass = verified ? 'success' : 'fail';
@@ -1552,17 +1493,29 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 </div>
             </div>
 
-            <h3>Synthesized Logic Circuits</h3>
+            <h3>Synthesized Logic Circuits (Transistor Optimized)</h3>
             <div class="circuit-box">
                 <h4>Standard Circuit (AND, OR, NOT)</h4>
+                <div class="metrics-badge">
+                    <span>⚡ Gates: <strong>${mStandard.gates}</strong></span>
+                    <span>🔬 Transistors: <strong>${mStandard.transistors}T</strong></span>
+                </div>
                 <div class="svg-container">${renderAST(astStandard)}</div>
             </div>
             <div class="circuit-box">
                 <h4>Universal NAND-Only Circuit</h4>
+                <div class="metrics-badge">
+                    <span>⚡ Gates: <strong>${mNAND.gates}</strong></span>
+                    <span>🔬 Transistors: <strong>${mNAND.transistors}T</strong></span>
+                </div>
                 <div class="svg-container">${renderAST(astNAND)}</div>
             </div>
             <div class="circuit-box">
                 <h4>Universal NOR-Only Circuit</h4>
+                <div class="metrics-badge">
+                    <span>⚡ Gates: <strong>${mNOR.gates}</strong></span>
+                    <span>🔬 Transistors: <strong>${mNOR.transistors}T</strong></span>
+                </div>
                 <div class="svg-container">${renderAST(astNOR)}</div>
             </div>
         `;
@@ -1609,71 +1562,122 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         return html;
     }
 
-    function buildStandardAST(sopTerms) {
+    function literalToNode(lit) {
+        if (lit.startsWith('~')) {
+            return { type: 'NOT', children: [{ type: 'VAR', value: lit.substring(1) }] };
+        }
+        return { type: 'VAR', value: lit };
+    }
+
+    function literalToNANDNode(lit) {
+        if (lit.startsWith('~')) {
+            const vNode = { type: 'VAR', value: lit.substring(1) };
+            return { type: 'NAND', children: [vNode, vNode] };
+        }
+        return { type: 'VAR', value: lit };
+    }
+
+    function literalToNORNode(lit) {
+        if (lit.startsWith('~')) {
+            const vNode = { type: 'VAR', value: lit.substring(1) };
+            return { type: 'NOR', children: [vNode, vNode] };
+        }
+        return { type: 'VAR', value: lit };
+    }
+
+    function buildOptimizedStandardAST(sopTerms) {
         if (sopTerms.length === 0) return { type: 'CONST', value: 0 };
         if (sopTerms[0][0] === '1') return { type: 'CONST', value: 1 };
 
-        let orNodes = sopTerms.map(term => {
-            let andNodes = term.map(lit => {
-                if (lit.startsWith('~')) return { type: 'NOT', children: [{ type: 'VAR', value: lit.substring(1) }] };
-                return { type: 'VAR', value: lit };
-            });
-            if (andNodes.length === 0) return { type: 'CONST', value: 1 };
-            return andNodes.reduce((acc, curr) => ({ type: 'AND', children: [acc, curr] }));
+        const productNodes = sopTerms.map(term => {
+            if (term.length === 1) return literalToNode(term[0]);
+            return { type: 'AND', children: term.map(literalToNode) };
         });
-        
-        if (orNodes.length === 0) return { type: 'CONST', value: 0 };
-        return orNodes.reduce((acc, curr) => ({ type: 'OR', children: [acc, curr] }));
+
+        if (productNodes.length === 1) return productNodes[0];
+        return { type: 'OR', children: productNodes };
     }
 
-    function buildPOSStandardAST(posTerms) {
+    function buildOptimizedNANDAST(sopTerms) {
+        if (sopTerms.length === 0) return { type: 'CONST', value: 0 };
+        if (sopTerms[0][0] === '1') return { type: 'CONST', value: 1 };
+
+        if (sopTerms.length === 1) {
+            const term = sopTerms[0];
+            if (term.length === 1) return literalToNANDNode(term[0]);
+            const nandFirst = { type: 'NAND', children: term.map(literalToNANDNode) };
+            return { type: 'NAND', children: [nandFirst, nandFirst] };
+        }
+
+        const nandInputs = sopTerms.map(term => {
+            if (term.length === 1) {
+                const lit = term[0];
+                if (lit.startsWith('~')) {
+                    const vNode = { type: 'VAR', value: lit.substring(1) };
+                    return { type: 'NAND', children: [vNode, vNode] };
+                } else {
+                    const vNode = { type: 'VAR', value: lit };
+                    return { type: 'NAND', children: [vNode, vNode] };
+                }
+            }
+            return { type: 'NAND', children: term.map(literalToNANDNode) };
+        });
+
+        return { type: 'NAND', children: nandInputs };
+    }
+
+    function buildOptimizedNORAST(posTerms) {
         if (posTerms.length === 0) return { type: 'CONST', value: 1 };
         if (posTerms[0][0] === '1') return { type: 'CONST', value: 0 };
 
-        let andNodes = posTerms.map(term => {
-            let orNodes = term.map(lit => {
-                if (lit.startsWith('~')) return { type: 'NOT', children: [{ type: 'VAR', value: lit.substring(1) }] };
-                return { type: 'VAR', value: lit };
-            });
-            if (orNodes.length === 0) return { type: 'CONST', value: 0 };
-            return orNodes.reduce((acc, curr) => ({ type: 'OR', children: [acc, curr] }));
+        if (posTerms.length === 1) {
+            const term = posTerms[0];
+            if (term.length === 1) return literalToNORNode(term[0]);
+            const norFirst = { type: 'NOR', children: term.map(literalToNORNode) };
+            return { type: 'NOR', children: [norFirst, norFirst] };
+        }
+
+        const norInputs = posTerms.map(term => {
+            if (term.length === 1) {
+                const lit = term[0];
+                const vNode = { type: 'VAR', value: lit.startsWith('~') ? lit.substring(1) : lit };
+                return { type: 'NOR', children: [vNode, vNode] };
+            }
+            return { type: 'NOR', children: term.map(literalToNORNode) };
         });
-        
-        if (andNodes.length === 0) return { type: 'CONST', value: 1 };
-        return andNodes.reduce((acc, curr) => ({ type: 'AND', children: [acc, curr] }));
+
+        return { type: 'NOR', children: norInputs };
     }
 
-    function astEquals(n1, n2) {
-        if (n1 === n2) return true;
-        if (!n1 || !n2 || n1.type !== n2.type || n1.value !== n2.value) return false;
-        let len1 = n1.children ? n1.children.length : 0;
-        let len2 = n2.children ? n2.children.length : 0;
-        if (len1 !== len2) return false;
-        if (len1 === 0) return true;
-        for (let i = 0; i < len1; i++) if (!astEquals(n1.children[i], n2.children[i])) return false;
-        return true;
-    }
+    function calculateMetrics(node) {
+        let gates = 0;
+        let transistors = 0;
 
-    function NOT_NAND(node) {
-        if (node.type === 'NAND' && astEquals(node.children[0], node.children[1])) return node.children[0];
-        return { type: 'NAND', children: [node, node] };
-    }
-    function convertToNAND(node) {
-        if (node.type === 'VAR' || node.type === 'CONST') return node;
-        if (node.type === 'NOT') return NOT_NAND(convertToNAND(node.children[0]));
-        if (node.type === 'AND') return NOT_NAND({ type: 'NAND', children: [convertToNAND(node.children[0]), convertToNAND(node.children[1])] });
-        if (node.type === 'OR') return { type: 'NAND', children: [NOT_NAND(convertToNAND(node.children[0])), NOT_NAND(convertToNAND(node.children[1]))] };
-    }
+        function traverse(n) {
+            if (!n || n.type === 'VAR' || n.type === 'CONST') return;
+            gates++;
+            const k = n.children ? n.children.length : 1;
+            
+            if (n.type === 'NOT') {
+                transistors += 2;
+            } else if (n.type === 'NAND' || n.type === 'NOR') {
+                if (k === 2 && n.children[0] === n.children[1]) {
+                    transistors += 2;
+                } else {
+                    transistors += (2 * k);
+                }
+            } else if (n.type === 'AND' || n.type === 'OR') {
+                transistors += (2 * k + 2);
+            }
 
-    function NOT_NOR(node) {
-        if (node.type === 'NOR' && astEquals(node.children[0], node.children[1])) return node.children[0];
-        return { type: 'NOR', children: [node, node] };
-    }
-    function convertToNOR(node) {
-        if (node.type === 'VAR' || node.type === 'CONST') return node;
-        if (node.type === 'NOT') return NOT_NOR(convertToNOR(node.children[0]));
-        if (node.type === 'AND') return { type: 'NOR', children: [NOT_NOR(convertToNOR(node.children[0])), NOT_NOR(convertToNOR(node.children[1]))] };
-        if (node.type === 'OR') return NOT_NOR({ type: 'NOR', children: [convertToNOR(node.children[0]), convertToNOR(node.children[1])] });
+            if (n.children) {
+                const uniqueChildren = Array.from(new Set(n.children));
+                uniqueChildren.forEach(traverse);
+            }
+        }
+
+        traverse(node);
+        return { gates, transistors };
     }
 
     function evaluateAST(node, inputs) {
@@ -1719,8 +1723,8 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             totalH += dim.h;
             maxW = Math.max(maxW, dim.w);
         });
-        node.h = Math.max(totalH + (node.children.length - 1) * 25, 60);
-        node.w = maxW + 110; 
+        node.h = Math.max(totalH + (node.children.length - 1) * 20, 60);
+        node.w = maxW + 120; 
         return {w: node.w, h: node.h};
     }
 
@@ -1729,12 +1733,12 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         if (!node.children || node.children.length === 0) return;
         
         let totalH = node.children.reduce((sum, c) => sum + c.h, 0);
-        let startY = y - (totalH + (node.children.length - 1) * 25) / 2;
+        let startY = y - (totalH + (node.children.length - 1) * 20) / 2;
         
         node.children.forEach(c => {
             let childY = startY + c.h / 2;
-            positionNode(c, x - 110, childY); 
-            startY += c.h + 25;
+            positionNode(c, x - 120, childY); 
+            startY += c.h + 20;
         });
     }
 
@@ -1794,7 +1798,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if(c.type === 'NOT') outX = c.x + 13;
             
             let inX = (node.type === 'OR' || node.type === 'NOR') ? node.x - 15 : node.x - 20;
-            let spread = Math.min(24, (node.children.length - 1) * 12);
+            let spread = Math.min(28, (node.children.length - 1) * 10);
             let step = node.children.length > 1 ? spread / (node.children.length - 1) : 0;
             let inY = (node.y - spread / 2) + (idx * step);
 
@@ -1829,7 +1833,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         } else if (node.type === 'NOR') {
             svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
-            svg += `<text x="${nx}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
+            svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
         return svg;
     }
