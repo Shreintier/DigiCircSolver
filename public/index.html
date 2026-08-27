@@ -35,6 +35,9 @@
             --accent-rose: #f43f5e;
             --accent-purple: #c084fc;
             
+            --wire-off: #475569;
+            --wire-on: #10b981;
+            
             --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-color);
             --shadow-btn: 0 4px 20px rgba(99, 102, 241, 0.4);
             
@@ -65,6 +68,9 @@
             --accent-green: #059669;
             --accent-amber: #d97706;
             --accent-purple: #7e22ce;
+            
+            --wire-off: #94a3b8;
+            --wire-on: #059669;
             
             --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.1), 0 0 0 1px var(--border-color);
             --shadow-btn: 0 4px 15px rgba(99, 102, 241, 0.3);
@@ -400,23 +406,24 @@
         .block-pin.in::after { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-left: 8px; }
         .block-pin.out::before { content: ''; display: inline-block; width: 35px; height: 2px; background: var(--primary); margin-right: 8px; }
 
-        #seg7-display-container {
+        .seg8-display-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1.5rem;
+            padding: 2rem;
             background: #020617;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             margin-bottom: 1.5rem;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
-        .seg7-segment {
+        .seg8-segment {
             fill: #1e293b;
             transition: fill 0.15s ease, filter 0.15s ease;
         }
-        .seg7-segment.active {
+        .seg8-segment.active {
             fill: #f43f5e;
-            filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.8));
+            filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.85));
         }
 
         #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; font-size: 1.25rem; border: none; outline: none; background: var(--primary); color: white; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; box-shadow: var(--shadow-btn); transition: all 0.3s ease; }
@@ -433,8 +440,9 @@
             <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
             <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
             <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
+            <div class="marquee-item">💡 8-SEGMENT DISPLAY DECODER (A-G + DP) <span class="dot"></span></div>
             <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
-            <div class="marquee-item">🧮 ARITHMETIC & DISPLAY GENERATOR <span class="dot"></span></div>
+            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">💻 AI RTL CODE GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
         </div>
@@ -448,7 +456,7 @@
                 Digital Circuits EE1202
             </div>
             <h1>Advanced Digital Logic Synthesizer</h1>
-            <p class="subtitle">Minimize boolean expressions, solve Quine-McCluskey prime implicants, generate visual 1 to 6 variable Karnaugh Maps, synthesize transistor-minimized universal logic circuits, write RTL code, and read circuit diagram images instantly using AI.</p>
+            <p class="subtitle">Minimize boolean expressions, solve Quine-McCluskey prime implicants, generate visual 1 to 6 variable Karnaugh Maps, synthesize transistor-minimized universal logic circuits, test 8-segment display decoders, write RTL code, and read circuit diagrams.</p>
         </div>
     </header>
 
@@ -470,6 +478,9 @@
                     </button>
                     <button class="tab" data-target="tab-arithmetic">
                         <span>🧮</span> Arithmetic Circuits
+                    </button>
+                    <button class="tab" data-target="tab-seg8">
+                        <span>💡</span> 8-Segment Display
                     </button>
                     <button class="tab" data-target="tab-rtl">
                         <span>💻</span> AI RTL Generator
@@ -553,23 +564,10 @@
                     <option value="prio42">4-to-2 Priority Encoder</option>
                     <option value="dec24">2-to-4 Binary Decoder</option>
                     <option value="dec38">3-to-8 Binary Decoder</option>
-                    <option value="seg7">BCD to 7-Segment Decoder (Common Cathode)</option>
                 </select>
 
                 <div id="interactiveCalc" style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md);">
                     <h3 style="color: var(--accent-green); margin-bottom: 1rem;">🧮 Live Auto-Translator & Calculator</h3>
-                    
-                    <div id="seg7-display-container" style="display:none;">
-                        <svg width="120" height="180" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
-                            <polygon id="seg-a" class="seg7-segment" points="25,15 95,15 85,27 35,27" />
-                            <polygon id="seg-b" class="seg7-segment" points="97,18 97,82 85,74 85,28" />
-                            <polygon id="seg-c" class="seg7-segment" points="97,98 97,162 85,152 85,106" />
-                            <polygon id="seg-d" class="seg7-segment" points="25,165 95,165 85,153 35,153" />
-                            <polygon id="seg-e" class="seg7-segment" points="23,98 23,162 35,152 35,106" />
-                            <polygon id="seg-f" class="seg7-segment" points="23,18 23,82 35,28 35,74" />
-                            <polygon id="seg-g" class="seg7-segment" points="26,90 35,83 85,83 94,90 85,97 35,97" />
-                        </svg>
-                    </div>
 
                     <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
                         <div style="background: var(--bg-tt); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
@@ -629,6 +627,46 @@
                 </div>
 
                 <button id="btnSynthesizeArithmetic" class="primary-btn synthesize-btn" style="margin-top: 1.5rem;">Generate Full Logic Pipeline AST ⚡</button>
+            </div>
+
+            <div class="tab-content" id="tab-seg8">
+                <h2 style="margin-bottom: 1rem;">💡 8-Segment Display Decoder (a-g + DP)</h2>
+                
+                <div class="seg8-display-wrapper">
+                    <svg width="150" height="210" viewBox="0 0 150 210" xmlns="http://www.w3.org/2000/svg">
+                        <polygon id="seg8-a" class="seg8-segment active" points="32,18 102,18 92,30 42,30" />
+                        <polygon id="seg8-b" class="seg8-segment active" points="104,21 104,85 92,77 92,31" />
+                        <polygon id="seg8-c" class="seg8-segment active" points="104,101 104,165 92,155 92,109" />
+                        <polygon id="seg8-d" class="seg8-segment active" points="32,168 102,168 92,156 42,156" />
+                        <polygon id="seg8-e" class="seg8-segment active" points="30,101 30,165 42,155 42,109" />
+                        <polygon id="seg8-f" class="seg8-segment active" points="30,21 30,85 42,31 42,77" />
+                        <polygon id="seg8-g" class="seg8-segment" points="33,93 42,86 92,86 101,93 92,100 42,100" />
+                        <circle id="seg8-dp" class="seg8-segment" cx="124" cy="168" r="8" />
+                    </svg>
+                </div>
+
+                <div class="grid-2" style="margin-bottom: 1.5rem;">
+                    <div style="background: var(--bg-tt); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <label for="seg8-bcd-dec" style="color:var(--text-main); font-weight:700;">Hex Digit (0-F / 0-15):</label>
+                        <input type="number" id="seg8-bcd-dec" class="calc-input" min="0" max="15" value="0">
+                        
+                        <label for="seg8-bcd-bin" style="color:var(--text-main); font-weight:700; margin-top:1rem;">Binary Input (D, C, B, A):</label>
+                        <input type="text" id="seg8-bcd-bin" class="calc-input" value="0000" maxlength="4">
+
+                        <div style="margin-top: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+                            <input type="checkbox" id="seg8-dp-toggle" style="width:18px; height:18px; accent-color: var(--primary); cursor:pointer;">
+                            <label for="seg8-dp-toggle" style="margin:0; cursor:pointer; color:var(--text-main); font-weight:600;">Enable Decimal Point (DP)</label>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-tt); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display:flex; flex-direction:column; justify-content:center;">
+                        <label style="color:var(--accent-cyan); font-weight:700; font-size:1.05rem;">Active Segment Bus (8-bit Word)</label>
+                        <span style="font-size:0.8rem; color:var(--text-dim); margin-bottom:0.5rem;">Bus: [a, b, c, d, e, f, g, dp]</span>
+                        <div id="seg8-bus-val" class="code-font" style="font-size:1.25rem; letter-spacing:3px; text-align:center; padding:1rem;">11111100</div>
+                    </div>
+                </div>
+
+                <button id="btnSynthesizeSeg8" class="primary-btn synthesize-btn">Synthesize 8-Segment Display Logic ⚡</button>
             </div>
 
             <div class="tab-content" id="tab-rtl">
@@ -780,6 +818,35 @@
         if (section) section.scrollIntoView({ behavior: 'smooth' });
     }
 
+    const seg8Map = {
+        0: 0b1111110, 1: 0b0110000, 2: 0b1101101, 3: 0b1111001,
+        4: 0b0110011, 5: 0b1011011, 6: 0b1011111, 7: 0b1110000,
+        8: 0b1111111, 9: 0b1111011, 10: 0b1110111, 11: 0b0011111,
+        12: 0b1001110, 13: 0b0111101, 14: 0b1001111, 15: 0b1000111
+    };
+
+    function updateSeg8UI() {
+        let decVal = parseInt(document.getElementById('seg8-bcd-dec').value) || 0;
+        decVal = Math.max(0, Math.min(15, decVal));
+        const dpVal = document.getElementById('seg8-dp-toggle').checked ? 1 : 0;
+        const pattern = seg8Map[decVal] || 0;
+        
+        const segs = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+        let busString = '';
+        segs.forEach((s, idx) => {
+            const bitOn = (pattern >> (6 - idx)) & 1;
+            busString += bitOn;
+            const el = document.getElementById(`seg8-${s}`);
+            if (el) el.classList.toggle('active', bitOn === 1);
+        });
+        
+        busString += dpVal;
+        const dpEl = document.getElementById('seg8-dp');
+        if (dpEl) dpEl.classList.toggle('active', dpVal === 1);
+
+        document.getElementById('seg8-bus-val').innerText = busString;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
@@ -839,6 +906,23 @@
         const scrollTopBtn = document.getElementById("scrollTopBtn");
         window.onscroll = () => { scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none"; };
         scrollTopBtn.onclick = () => { window.scrollTo({top: 0, behavior: 'smooth'}); };
+
+        document.getElementById('seg8-bcd-dec').addEventListener('input', (e) => {
+            let val = parseInt(e.target.value) || 0;
+            val = Math.max(0, Math.min(15, val));
+            document.getElementById('seg8-bcd-bin').value = val.toString(2).padStart(4, '0');
+            updateSeg8UI();
+        });
+
+        document.getElementById('seg8-bcd-bin').addEventListener('input', (e) => {
+            let valStr = e.target.value.replace(/[^01]/g, '').slice(-4);
+            let val = parseInt(valStr, 2) || 0;
+            document.getElementById('seg8-bcd-dec').value = val;
+            updateSeg8UI();
+        });
+
+        document.getElementById('seg8-dp-toggle').addEventListener('change', updateSeg8UI);
+        updateSeg8UI();
 
         document.getElementById('submitBtn').addEventListener('click', async () => {
             const userPrompt = document.getElementById('prompt').value.trim();
@@ -1037,21 +1121,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             'enc42': { l1: 'Active-High (1-hot, 4-bit)', b1: 4, l2: 'Unused (0)', b2: 1, l3: null, b3: 0, outBits: 2 },
             'prio42': { l1: 'Request Input (4-bit)', b1: 4, l2: 'Unused (0)', b2: 1, l3: null, b3: 0, outBits: 3 },
             'dec24': { l1: 'Select Address (2-bit)', b1: 2, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 4 },
-            'dec38': { l1: 'Select Address (3-bit)', b1: 3, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 8 },
-            'seg7': { l1: 'BCD Input (4-bit)', b1: 4, l2: null, b2: 0, l3: null, b3: 0, outBits: 7 }
-        };
-
-        const seg7Map = {
-            0: 0b1111110,
-            1: 0b0110000,
-            2: 0b1101101,
-            3: 0b1111001,
-            4: 0b0110011,
-            5: 0b1011011,
-            6: 0b1011111,
-            7: 0b1110000,
-            8: 0b1111111,
-            9: 0b1111011
+            'dec38': { l1: 'Select Address (3-bit)', b1: 3, l2: 'Enable EN (1-bit)', b2: 1, l3: null, b3: 0, outBits: 8 }
         };
 
         function initCalculator() {
@@ -1073,13 +1143,6 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 document.getElementById('lbl-calc-in3').innerText = cfg.l3;
             } else {
                 document.getElementById('calc-in3-box').style.display = 'none';
-            }
-
-            const seg7Box = document.getElementById('seg7-display-container');
-            if (type === 'seg7') {
-                seg7Box.style.display = 'flex';
-            } else {
-                seg7Box.style.display = 'none';
             }
             
             ['in1', 'in2', 'in3'].forEach((prefix, i) => {
@@ -1168,18 +1231,6 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 outBinVal = (v2 & 1) ? (1 << v1) : 0;
                 outDec = outBinVal;
             }
-            else if(type === 'seg7') {
-                outBinVal = seg7Map[v1] || 0;
-                outDec = v1;
-                const segs = ['a','b','c','d','e','f','g'];
-                segs.forEach((s, idx) => {
-                    const el = document.getElementById(`seg-${s}`);
-                    if (el) {
-                        const bitOn = (outBinVal >> (6 - idx)) & 1;
-                        el.classList.toggle('active', bitOn === 1);
-                    }
-                });
-            }
 
             document.getElementById('calc-out-dec').value = outDec;
             document.getElementById('calc-out-bin').value = outBinVal.toString(2).padStart(cnf.outBits, '0');
@@ -1200,6 +1251,71 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         
         initCalculator();
     });
+
+    window.liveSimState = {};
+
+    window.togglePinSim = function(uniqueId, varName) {
+        if (!window.liveSimState[uniqueId]) window.liveSimState[uniqueId] = {};
+        window.liveSimState[uniqueId][varName] = window.liveSimState[uniqueId][varName] ? 0 : 1;
+        updateLiveSimulation(uniqueId);
+    };
+
+    function updateLiveSimulation(uniqueId) {
+        const simData = window.liveSimRegistry[uniqueId];
+        if (!simData) return;
+        const inputs = window.liveSimState[uniqueId] || {};
+
+        function evalNode(n) {
+            if (!n) return 0;
+            if (n.type === 'CONST') return n.value;
+            if (n.type === 'VAR') return inputs[n.value] || 0;
+            if (n.type === 'NOT') return !evalNode(n.children[0]) ? 1 : 0;
+            if (n.type === 'AND') return n.children.every(c => evalNode(c) === 1) ? 1 : 0;
+            if (n.type === 'OR') return n.children.some(c => evalNode(c) === 1) ? 1 : 0;
+            if (n.type === 'NAND') return !n.children.every(c => evalNode(c) === 1) ? 1 : 0;
+            if (n.type === 'NOR') return !n.children.some(c => evalNode(c) === 1) ? 1 : 0;
+            return 0;
+        }
+
+        ['std', 'nand', 'nor'].forEach(circuitType => {
+            const ast = simData[circuitType];
+            if (!ast) return;
+            const container = document.getElementById(`svg-${uniqueId}-${circuitType}`);
+            if (!container) return;
+
+            simData.vars.forEach(v => {
+                const val = inputs[v] || 0;
+                container.querySelectorAll(`.input-val-${v}`).forEach(el => {
+                    el.textContent = val;
+                    el.setAttribute('fill', val ? 'var(--accent-green)' : 'var(--accent-rose)');
+                });
+                container.querySelectorAll(`.input-box-${v}`).forEach(el => {
+                    el.setAttribute('stroke', val ? 'var(--accent-green)' : 'var(--border-color)');
+                });
+            });
+
+            function updateWiresAndGates(n) {
+                if (!n) return;
+                const nodeVal = evalNode(n);
+                const wireColor = nodeVal ? 'var(--wire-on)' : 'var(--wire-off)';
+                
+                container.querySelectorAll(`.wire-from-${n.nid}`).forEach(w => {
+                    w.setAttribute('stroke', wireColor);
+                    w.setAttribute('stroke-width', nodeVal ? '2.5' : '1.5');
+                });
+                
+                if (n.children) n.children.forEach(updateWiresAndGates);
+            }
+
+            updateWiresAndGates(ast);
+            const outVal = evalNode(ast);
+            const outEl = container.querySelector('.circuit-out-text');
+            if (outEl) {
+                outEl.textContent = `Out = ${outVal}`;
+                outEl.setAttribute('fill', outVal ? 'var(--accent-green)' : 'var(--accent-rose)');
+            }
+        });
+    }
 
     function processInput() {
         const errorMsg = document.getElementById('errorMsg');
@@ -1270,7 +1386,12 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 synthesisQueue = getArithmeticConfig(type);
                 outputs.appendChild(renderBlockDiagram(type));
             }
+            else if (activeTab === 'tab-seg8') {
+                synthesisQueue = getSeg8Config();
+                outputs.appendChild(renderBlockDiagram('seg8'));
+            }
 
+            window.liveSimRegistry = {};
             synthesisQueue.forEach((job, index) => {
                 const section = document.createElement('div');
                 section.className = 'multi-output-section';
@@ -1598,6 +1719,20 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         const veriClass = verified ? 'success' : 'fail';
         const veriText = verified ? '✓ Verification Passed: Minimized K-Map terms, NAND-only, and NOR-only circuits match.' : '✗ Verification Failed: Circuit outputs mismatch.';
 
+        const uniqueId = `job-${index}`;
+        window.liveSimRegistry[uniqueId] = {
+            vars: vars,
+            std: astStandard,
+            nand: astNAND,
+            nor: astNOR
+        };
+
+        const renderSimHeader = `
+            <div style="margin-bottom:0.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+                <span style="font-size:0.85rem; color:var(--accent-cyan); font-weight:600;">👆 Click any input pin (0/1) to test signal propagation</span>
+            </div>
+        `;
+
         return `
             <div class="verification ${veriClass}">${veriText}</div>
             
@@ -1618,14 +1753,15 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 </div>
             </div>
 
-            <h3>Synthesized Logic Circuits (Transistor Optimized)</h3>
+            <h3>Synthesized Logic Circuits (Interactive Simulation)</h3>
             <div class="circuit-box">
                 <h4>Standard Circuit (AND, OR, NOT)</h4>
                 <div class="metrics-badge">
                     <span>⚡ Gates: <strong>${mStandard.gates}</strong></span>
                     <span>🔬 Transistors: <strong>${mStandard.transistors}T</strong></span>
                 </div>
-                <div class="svg-container">${renderAST(astStandard)}</div>
+                ${renderSimHeader}
+                <div class="svg-container" id="svg-${uniqueId}-std">${renderAST(astStandard, uniqueId, 'std')}</div>
             </div>
             <div class="circuit-box">
                 <h4>Universal NAND-Only Circuit</h4>
@@ -1633,7 +1769,8 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                     <span>⚡ Gates: <strong>${mNAND.gates}</strong></span>
                     <span>🔬 Transistors: <strong>${mNAND.transistors}T</strong></span>
                 </div>
-                <div class="svg-container">${renderAST(astNAND)}</div>
+                ${renderSimHeader}
+                <div class="svg-container" id="svg-${uniqueId}-nand">${renderAST(astNAND, uniqueId, 'nand')}</div>
             </div>
             <div class="circuit-box">
                 <h4>Universal NOR-Only Circuit</h4>
@@ -1641,7 +1778,8 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                     <span>⚡ Gates: <strong>${mNOR.gates}</strong></span>
                     <span>🔬 Transistors: <strong>${mNOR.transistors}T</strong></span>
                 </div>
-                <div class="svg-container">${renderAST(astNOR)}</div>
+                ${renderSimHeader}
+                <div class="svg-container" id="svg-${uniqueId}-nor">${renderAST(astNOR, uniqueId, 'nor')}</div>
             </div>
         `;
     }
@@ -1834,16 +1972,17 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         return true;
     }
 
+    let globalNodeCounter = 0;
     function cloneTree(node) {
         if (!node) return null;
-        let clone = { type: node.type, value: node.value };
+        let clone = { type: node.type, value: node.value, nid: `node-${globalNodeCounter++}` };
         if (node.children) clone.children = node.children.map(cloneTree);
         return clone;
     }
 
     function layoutNode(node) {
         if (node.type === 'VAR' || node.type === 'CONST') {
-            node.w = 50; node.h = 40; return {w: 50, h: 40};
+            node.w = 56; node.h = 44; return {w: 56, h: 44};
         }
         let totalH = 0; let maxW = 0;
         node.children.forEach((c) => {
@@ -1870,13 +2009,14 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         });
     }
 
-    function renderAST(originalNode) {
+    function renderAST(originalNode, uniqueId = '', circuitKind = '') {
         const cBgNode = isLightMode ? '#f1f5f9' : '#1e293b';
         const cWire = isLightMode ? '#94a3b8' : '#475569';
         const cPrimary = isLightMode ? '#0284c7' : '#00f3ff';
         const cText = isLightMode ? '#0f172a' : '#f8fafc';
         const cNotBg = isLightMode ? '#ffffff' : '#0b0f19';
 
+        globalNodeCounter = 0;
         let node = cloneTree(originalNode);
         if(node.type === 'CONST') return `<svg width="240" height="60"><text x="120" y="35" text-anchor="middle" font-family="sans-serif" fill="${cText}">Output is constant ${node.value}</text></svg>`;
         
@@ -1885,8 +2025,8 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
 
         let bounds = { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity };
         function calcBounds(n) {
-            bounds.minX = Math.min(bounds.minX, n.x - 40);
-            bounds.maxX = Math.max(bounds.maxX, n.x + 60);
+            bounds.minX = Math.min(bounds.minX, n.x - 45);
+            bounds.maxX = Math.max(bounds.maxX, n.x + 80);
             bounds.minY = Math.min(bounds.minY, n.y - 40);
             bounds.maxY = Math.max(bounds.maxY, n.y + 40);
             if(n.children) n.children.forEach(calcBounds);
@@ -1908,12 +2048,12 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
 
         let svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="user-select:none;">`;
         svg += drawConnections(node, cWire);
-        svg += drawNodes(node, cBgNode, cPrimary, cText, cNotBg);
+        svg += drawNodes(node, cBgNode, cPrimary, cText, cNotBg, uniqueId);
         
         let outX = node.type.includes('N') ? node.x + 28 : (node.type==='VAR' ? node.x+20 : node.x+20);
         if(node.type === 'NOT') outX = node.x + 13;
-        svg += `<path d="M ${outX},${node.y} L ${outX + 30},${node.y}" stroke="#6366f1" stroke-width="2.5" fill="none"/>`;
-        svg += `<text x="${outX + 40}" y="${node.y + 5}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="bold" fill="${cPrimary}">Out</text>`;
+        svg += `<path class="wire-from-${node.nid}" d="M ${outX},${node.y} L ${outX + 35},${node.y}" stroke="#6366f1" stroke-width="2.5" fill="none"/>`;
+        svg += `<text class="circuit-out-text" x="${outX + 45}" y="${node.y + 5}" font-family="'Fira Code', monospace" font-weight="bold" fill="${cPrimary}">Out</text>`;
         svg += `</svg>`;
         return svg;
     }
@@ -1922,7 +2062,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         if (!node.children) return "";
         let svg = "";
         node.children.forEach((c, idx) => {
-            let outX = c.type.includes('N') ? c.x+28 : (c.type==='VAR'||c.type==='CONST' ? c.x+20 : c.x+20);
+            let outX = c.type.includes('N') ? c.x+28 : (c.type==='VAR'||c.type==='CONST' ? c.x+24 : c.x+20);
             if(c.type === 'NOT') outX = c.x + 13;
             
             let inX = (node.type === 'OR' || node.type === 'NOR') ? node.x - 15 : node.x - 20;
@@ -1931,20 +2071,24 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             let inY = (node.y - spread / 2) + (idx * step);
 
             let midX = outX + (inX - outX) / 2;
-            svg += `<path d="M ${outX},${c.y} H ${midX} V ${inY} H ${inX}" fill="none" stroke="${cWire}" stroke-width="2"/>`;
+            svg += `<path class="wire-from-${c.nid}" d="M ${outX},${c.y} H ${midX} V ${inY} H ${inX}" fill="none" stroke="${cWire}" stroke-width="2"/>`;
             svg += drawConnections(c, cWire);
         });
         return svg;
     }
 
-    function drawNodes(node, bg, pri, txt, notBg) {
+    function drawNodes(node, bg, pri, txt, notBg, uniqueId = '') {
         let svg = "";
-        if (node.children) node.children.forEach(c => { svg += drawNodes(c, bg, pri, txt, notBg); });
+        if (node.children) node.children.forEach(c => { svg += drawNodes(c, bg, pri, txt, notBg, uniqueId); });
         let nx = node.x, ny = node.y;
         
         if (node.type === 'VAR' || node.type === 'CONST') {
-            svg += `<rect x="${nx-18}" y="${ny-15}" width="36" height="30" rx="6" fill="${bg}" stroke="${pri}" stroke-width="1.5"/>`;
-            svg += `<text x="${nx}" y="${ny+5}" font-family="'Fira Code', monospace" font-size="14" font-weight="bold" fill="${pri}" text-anchor="middle">${node.value}</text>`;
+            const clickAttr = uniqueId ? `onclick="window.togglePinSim('${uniqueId}', '${node.value}')" style="cursor:pointer;"` : '';
+            svg += `<g ${clickAttr}>`;
+            svg += `<rect class="input-box-${node.value}" x="${nx-22}" y="${ny-16}" width="46" height="32" rx="6" fill="${bg}" stroke="${pri}" stroke-width="1.5"/>`;
+            svg += `<text x="${nx-4}" y="${ny+4}" font-family="'Fira Code', monospace" font-size="12" font-weight="bold" fill="${pri}" text-anchor="middle">${node.value}</text>`;
+            svg += `<text class="input-val-${node.value}" x="${nx+13}" y="${ny+4}" font-family="'Fira Code', monospace" font-size="11" font-weight="bold" fill="var(--accent-rose)" text-anchor="middle">0</text>`;
+            svg += `</g>`;
         } else if (node.type === 'AND') {
             svg += `<path d="M ${nx-20},${ny-20} L ${nx},${ny-20} A 20,20 0 0,1 ${nx},${ny+20} L ${nx-20},${ny+20} Z" fill="${bg}" stroke="#818cf8" stroke-width="2"/>`;
             svg += `<text x="${nx-5}" y="${ny+3}" font-size="9" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">AND</text>`;
@@ -1961,7 +2105,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         } else if (node.type === 'NOR') {
             svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
-            svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
+            svg += `<text x="${nx}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
         return svg;
     }
@@ -2034,7 +2178,9 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             let y0 = [], y1 = [], y2 = [], y3 = [];
             for(let i = 0; i < 8; i++) {
                 let din = (i >> 2) & 1;
-                let s = i & 3;
+                let s1 = (i >> 1) & 1;
+                let s0 = i & 1;
+                let s = (s1 << 1) | s0;
                 y0.push((s === 0 && din === 1) ? 1 : 0);
                 y1.push((s === 1 && din === 1) ? 1 : 0);
                 y2.push((s === 2 && din === 1) ? 1 : 0);
@@ -2091,7 +2237,9 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             let y0 = [], y1 = [], y2 = [], y3 = [];
             for(let i = 0; i < 8; i++) {
                 let en = (i >> 2) & 1;
-                let addr = i & 3;
+                let a1 = (i >> 1) & 1;
+                let a0 = i & 1;
+                let addr = (a1 << 1) | a0;
                 y0.push((en && addr === 0) ? 1 : 0);
                 y1.push((en && addr === 1) ? 1 : 0);
                 y2.push((en && addr === 2) ? 1 : 0);
@@ -2108,7 +2256,10 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             let outputs = [[], [], [], [], [], [], [], []];
             for(let i = 0; i < 16; i++) {
                 let en = (i >> 3) & 1;
-                let addr = i & 7;
+                let a2 = (i >> 2) & 1;
+                let a1 = (i >> 1) & 1;
+                let a0 = i & 1;
+                let addr = (a2 << 2) | (a1 << 1) | a0;
                 for(let line = 0; line < 8; line++) {
                     outputs[line].push((en && addr === line) ? 1 : 0);
                 }
@@ -2124,38 +2275,33 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
                 { name: '3-to-8 Decoder (Y0)', vars: ['EN', 'A2', 'A1', 'A0'], tt: outputs[0] }
             ];
         }
-        if (type === 'seg7') {
-            const segOutputs = { a: [], b: [], c: [], d: [], e: [], f: [], g: [] };
-            for(let i = 0; i < 16; i++) {
-                if (i <= 9) {
-                    let pattern = seg7Map[i];
-                    segOutputs.a.push((pattern >> 6) & 1);
-                    segOutputs.b.push((pattern >> 5) & 1);
-                    segOutputs.c.push((pattern >> 4) & 1);
-                    segOutputs.d.push((pattern >> 3) & 1);
-                    segOutputs.e.push((pattern >> 2) & 1);
-                    segOutputs.f.push((pattern >> 1) & 1);
-                    segOutputs.g.push(pattern & 1);
-                } else {
-                    segOutputs.a.push('X');
-                    segOutputs.b.push('X');
-                    segOutputs.c.push('X');
-                    segOutputs.d.push('X');
-                    segOutputs.e.push('X');
-                    segOutputs.f.push('X');
-                    segOutputs.g.push('X');
-                }
-            }
-            return [
-                { name: '7-Segment (Segment a)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.a },
-                { name: '7-Segment (Segment b)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.b },
-                { name: '7-Segment (Segment c)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.c },
-                { name: '7-Segment (Segment d)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.d },
-                { name: '7-Segment (Segment e)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.e },
-                { name: '7-Segment (Segment f)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.f },
-                { name: '7-Segment (Segment g)', vars: ['D', 'C', 'B', 'A'], tt: segOutputs.g }
-            ];
+    }
+
+    function getSeg8Config() {
+        const segOutputs = { a: [], b: [], c: [], d: [], e: [], f: [], g: [], dp: [] };
+        for(let i = 0; i < 32; i++) {
+            let dp = (i >> 4) & 1;
+            let bcd = i & 15;
+            let pattern = seg8Map[bcd] || 0;
+            segOutputs.a.push((pattern >> 6) & 1);
+            segOutputs.b.push((pattern >> 5) & 1);
+            segOutputs.c.push((pattern >> 4) & 1);
+            segOutputs.d.push((pattern >> 3) & 1);
+            segOutputs.e.push((pattern >> 2) & 1);
+            segOutputs.f.push((pattern >> 1) & 1);
+            segOutputs.g.push(pattern & 1);
+            segOutputs.dp.push(dp);
         }
+        return [
+            { name: '8-Segment Decoder (Segment a)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.a },
+            { name: '8-Segment Decoder (Segment b)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.b },
+            { name: '8-Segment Decoder (Segment c)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.c },
+            { name: '8-Segment Decoder (Segment d)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.d },
+            { name: '8-Segment Decoder (Segment e)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.e },
+            { name: '8-Segment Decoder (Segment f)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.f },
+            { name: '8-Segment Decoder (Segment g)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.g },
+            { name: '8-Segment Decoder (Segment DP)', vars: ['DP_IN', 'D', 'C', 'B', 'A'], tt: segOutputs.dp }
+        ];
     }
 
     function renderBlockDiagram(type) {
@@ -2177,7 +2323,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         else if(type === 'prio42') { title = "4-to-2 Priority Encoder"; inputs = "<div class='block-pin in'>D3, D2, D1, D0</div>"; outputs = "<div class='block-pin out'>V (Valid)</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
         else if(type === 'dec24') { title = "2-to-4 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A1, A0</div>"; outputs = "<div class='block-pin out'>Y3</div><div class='block-pin out'>Y2</div><div class='block-pin out'>Y1</div><div class='block-pin out'>Y0</div>"; }
         else if(type === 'dec38') { title = "3-to-8 Decoder"; inputs = "<div class='block-pin in'>EN</div><div class='block-pin in'>A2, A1, A0</div>"; outputs = "<div class='block-pin out'>Y7..Y4</div><div class='block-pin out'>Y3..Y0</div>"; }
-        else if(type === 'seg7') { title = "BCD to 7-Segment"; inputs = "<div class='block-pin in'>D, C, B, A</div>"; outputs = "<div class='block-pin out'>a, b, c, d, e, f, g</div>"; }
+        else if(type === 'seg8') { title = "8-Segment Decoder"; inputs = "<div class='block-pin in'>DP_IN</div><div class='block-pin in'>D, C, B, A</div>"; outputs = "<div class='block-pin out'>a, b, c, d</div><div class='block-pin out'>e, f, g, dp</div>"; }
 
         div.innerHTML = `<div class="block-box">
             <div class="block-inputs">${inputs}</div>
