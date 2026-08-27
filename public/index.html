@@ -418,6 +418,12 @@
             <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">💻 AI RTL CODE GENERATOR <span class="dot"></span></div>
             <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
+            <div class="marquee-item">⚡ 1 TO 6 VARIABLE KARNAUGH MAPS <span class="dot"></span></div>
+            <div class="marquee-item">🔬 QUINE-MCCLUSKEY OPTIMIZER <span class="dot"></span></div>
+            <div class="marquee-item">🛠️ OPTIMIZED UNIVERSAL NAND & NOR SYNTHESIZER <span class="dot"></span></div>
+            <div class="marquee-item">🤖 GEMINI AI LOGIC ASSISTANT <span class="dot"></span></div>
+            <div class="marquee-item">🧮 ARITHMETIC CIRCUIT GENERATOR <span class="dot"></span></div>
+            <div class="marquee-item">📷 AI CIRCUIT IMAGE READER <span class="dot"></span></div>
         </div>
     </div>
 
@@ -1693,10 +1699,10 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
             if (term.length === 1) {
                 const lit = term[0];
                 if (lit.startsWith('~')) {
-                    const vNode = { type: 'VAR', value: lit.substring(1) };
-                    return { type: 'NOR', children: [vNode, vNode] };
+                    return { type: 'VAR', value: lit.substring(1) };
                 } else {
-                    return { type: 'VAR', value: lit };
+                    const vNode = { type: 'VAR', value: lit };
+                    return { type: 'NOR', children: [vNode, vNode] };
                 }
             }
             return { type: 'NOR', children: term.map(literalToNORNode) };
@@ -1889,7 +1895,7 @@ Identify every gate (AND, OR, NOT, NAND, NOR, XOR, XNOR), how the inputs/wires c
         } else if (node.type === 'NOR') {
             svg += `<path d="M ${nx-20},${ny-20} Q ${nx},${ny} ${nx-20},${ny+20} Q ${nx+10},${ny+20} ${nx+20},${ny} Q ${nx+10},${ny-20} ${nx-20},${ny-20} Z" fill="${bg}" stroke="${pri}" stroke-width="2"/>`;
             svg += `<circle cx="${nx+24}" cy="${ny}" r="4" fill="${notBg}" stroke="${pri}" stroke-width="2"/>`;
-            svg += `<text x="${nx}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
+            svg += `<text x="${nx-5}" y="${ny+3}" font-size="8.5" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" font-weight="bold" fill="${txt}">NOR</text>`;
         }
         return svg;
     }
